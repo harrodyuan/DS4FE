@@ -1,0 +1,51 @@
+ticker,sector,short_name,long_name,industry,market_cap,shares_out,country,exchange
+AAPL,Technology,Apple Inc.,Apple Inc.,Consumer Electronics,3698586025984,14681140000,United States,NMS
+MSFT,Technology,Microsoft Corporation,Microsoft Corporation,Software - Infrastructure,2770344345600,7425629076,United States,NMS
+GOOGL,Technology,Alphabet Inc.,Alphabet Inc.,Internet Content & Information,3513452855296,5822000000,United States,NMS
+NVDA,Technology,NVIDIA Corporation,NVIDIA Corporation,Semiconductors,4258235940864,24300000000,United States,NMS
+META,Technology,"Meta Platforms, Inc.","Meta Platforms, Inc.",Internet Content & Information,1499823996928,2187177748,United States,NMS
+ADBE,Technology,Adobe Inc.,Adobe Inc.,Software - Application,98056134656,407636918,United States,NMS
+CRM,Technology,"Salesforce, Inc.","Salesforce, Inc.",Software - Application,171489738752,923000000,United States,NYQ
+INTC,Technology,Intel Corporation,Intel Corporation,Semiconductors,220087566336,4995000000,United States,NMS
+AMD,Technology,"Advanced Micro Devices, Inc.","Advanced Micro Devices, Inc.",Semiconductors,334837481472,1630410843,United States,NMS
+QCOM,Technology,QUALCOMM Incorporated,QUALCOMM Incorporated,Semiconductors,137425362944,1067000000,United States,NMS
+JPM,Financials,JP Morgan Chase & Co.,JPMorgan Chase & Co.,Banks - Diversified,788612251648,2697032375,United States,NYQ
+BAC,Financials,Bank of America Corporation,Bank of America Corporation,Banks - Diversified,351542149120,7176682170,United States,NYQ
+GS,Financials,"Goldman Sachs Group, Inc. (The)","The Goldman Sachs Group, Inc.",Capital Markets,250656243712,296752922,United States,NYQ
+MS,Financials,Morgan Stanley,Morgan Stanley,Capital Markets,263378370560,1587860206,United States,NYQ
+WFC,Financials,Wells Fargo & Company,Wells Fargo & Company,Banks - Diversified,245647458304,3074954752,United States,NYQ
+BLK,Financials,"BlackRock, Inc.","BlackRock, Inc.",Asset Management,151817863168,155541536,United States,NYQ
+AXP,Financials,American Express Company,American Express Company,Credit Services,208033202176,686614005,United States,NYQ
+C,Financials,"Citigroup, Inc.",Citigroup Inc.,Banks - Diversified,198967541760,1749319009,United States,NYQ
+USB,Financials,U.S. Bancorp,U.S. Bancorp,Banks - Regional,81009696768,1552252176,United States,NYQ
+PNC,Financials,"PNC Financial Services Group, I","The PNC Financial Services Group, Inc.",Banks - Regional,83430170624,403370923,United States,NYQ
+JNJ,Healthcare,Johnson & Johnson,Johnson & Johnson,Drug Manufacturers - General,566976970752,2408613219,United States,NYQ
+UNH,Healthcare,UnitedHealth Group Incorporated,UnitedHealth Group Incorporated,Healthcare Plans,247141974016,907675839,United States,NYQ
+PFE,Healthcare,"Pfizer, Inc.",Pfizer Inc.,Drug Manufacturers - General,153358073856,5688356129,United States,NYQ
+ABBV,Healthcare,AbbVie Inc.,AbbVie Inc.,Drug Manufacturers - General,362828267520,1768169012,United States,NYQ
+MRK,Healthcare,"Merck & Company, Inc.","Merck & Co., Inc.",Drug Manufacturers - General,287712247808,2472392003,United States,NYQ
+TMO,Healthcare,Thermo Fisher Scientific Inc,Thermo Fisher Scientific Inc.,Diagnostics & Research,182135013376,371484244,United States,NYQ
+ABT,Healthcare,Abbott Laboratories,Abbott Laboratories,Medical Devices,180823277568,1737674869,United States,NYQ
+LLY,Healthcare,Eli Lilly and Company,Eli Lilly and Company,Drug Manufacturers - General,808219836416,892992420,United States,NYQ
+BMY,Healthcare,Bristol-Myers Squibb Company,Bristol-Myers Squibb Company,Drug Manufacturers - General,116873224192,2036473705,United States,NYQ
+AMGN,Healthcare,Amgen Inc.,Amgen Inc.,Drug Manufacturers - General,187827339264,539067675,United States,NMS
+AMZN,Consumer,"Amazon.com, Inc.","Amazon.com, Inc.",Internet Retail,2224704978944,10734920870,United States,NMS
+HD,Consumer,"Home Depot, Inc. (The)","The Home Depot, Inc.",Home Improvement Retail,329590145024,996011466,United States,NYQ
+MCD,Consumer,McDonald's Corporation,McDonald's Corporation,Restaurants,219675983872,712154350,United States,NYQ
+NKE,Consumer,"Nike, Inc.","NIKE, Inc.",Footwear & Accessories,79185707008,1191495650,United States,NYQ
+SBUX,Consumer,Starbucks Corporation,Starbucks Corporation,Restaurants,104792817664,1139300000,United States,NMS
+TGT,Consumer,Target Corporation,Target Corporation,Discount Stores,52495020032,452855589,United States,NYQ
+WMT,Consumer,Walmart Inc.,Walmart Inc.,Discount Stores,973031800832,7972402501,United States,NMS
+COST,Consumer,Costco Wholesale Corporation,Costco Wholesale Corporation,Discount Stores,432248913920,443652540,United States,NMS
+LOW,Consumer,"Lowe's Companies, Inc.","Lowe's Companies, Inc.",Home Improvement Retail,131503849472,560951457,United States,NYQ
+TJX,Consumer,"TJX Companies, Inc. (The)","The TJX Companies, Inc.",Apparel Retail,176267247616,1110467095,United States,NYQ
+XOM,Energy/Indus,Exxon Mobil Corporation,Exxon Mobil Corporation,Oil & Gas Integrated,689099374592,4166763453,United States,NYQ
+CVX,Energy/Indus,Chevron Corporation,Chevron Corporation,Oil & Gas Integrated,413446307840,1981217539,United States,NYQ
+CAT,Energy/Indus,"Caterpillar, Inc.",Caterpillar Inc.,Farm & Heavy Construction Machinery,335368224768,465287332,United States,NYQ
+GE,Energy/Indus,GE Aerospace,GE Aerospace,Aerospace & Defense,306560565248,1044829602,United States,NYQ
+BA,Energy/Indus,Boeing Company (The),The Boeing Company,Aerospace & Defense,154355515392,785844140,United States,NYQ
+MMM,Energy/Indus,3M Company,3M Company,Conglomerates,77251084288,526700000,United States,NYQ
+UPS,Energy/Indus,"United Parcel Service, Inc.","United Parcel Service, Inc.",Integrated Freight & Logistics,83641802752,745633402,United States,NYQ
+HON,Energy/Indus,Honeywell International Inc.,Honeywell International Inc.,Conglomerates,140846678016,635675701,United States,NMS
+LMT,Energy/Indus,Lockheed Martin Corporation,Lockheed Martin Corporation,Aerospace & Defense,141191987200,230080240,United States,NYQ
+RTX,Energy/Indus,RTX Corporation,RTX Corporation,Aerospace & Defense,261119016960,1345974220,United States,NYQ
