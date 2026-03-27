@@ -51,7 +51,7 @@ Dataset: 50 large-cap US stocks across 5 sectors, 2010–2024, daily OHLCV + mac
 
 ## Part 3: Single Stock Prediction (`DS4FE_Part3_Single_Stock_Prediction.ipynb`)
 
-**What it covers:** Combine features into a predictive ML model on AAPL. Walk-forward backtest + trading simulation.
+**What it covers:** Combine features into a predictive ML model on AAPL. Walk-forward backtest + trading simulation + cross-frequency OOS R² comparison vs LOB.
 
 **Key points:**
 
@@ -59,18 +59,66 @@ Dataset: 50 large-cap US stocks across 5 sectors, 2010–2024, daily OHLCV + mac
 
 - **Walk-forward evaluation** — train on all data through day $t$, predict day $t+1$, expand window, repeat. Never shuffle a time series. Random splitting leaks future data into the training set. The first 504 days (~2 years) are consumed as the seed window and produce no out-of-sample predictions.
 
-- **Model comparison (Linear, Ridge, Random Forest)** — all three produce win rates of ~50–52%. Random forest offers no consistent advantage over linear models. This tells you that the predictive relationship between features and next-day returns for a single large-cap is approximately linear and small. There is not much non-linearity for a tree ensemble to exploit.
+- **15 features (12 from Part 2 + 3 new)** — adds `mom_252d` (12-month momentum), `vol_ratio` (short/long vol ratio), `vix_chg` (VIX change). All 15 are time-series features for AAPL alone — not cross-sectional rankings.
 
-- **Fundamentals (PE/PB/PS) problem** — `yfinance` only returns today's snapshot. Using it as a historical feature labels every 2012 training observation with 2025's valuation ratio. Historical point-in-time fundamentals require a paid source (Compustat, Sharadar, SimFin). Currently replaced with `mom_252d` as a directional proxy. **Open question: whether to add proper historical PE/PB from yfinance quarterly financials** (`income_stmt`, `balance_sheet`) in `download_data.py`.
+- **Time-series vs cross-sectional momentum** — the momentum features here measure AAPL's own past return, NOT how AAPL ranks relative to other stocks. The Jegadeesh-Titman momentum anomaly is cross-sectional: stocks that beat *other stocks* tend to keep beating *other stocks*. Time-series autocorrelation in a single large-cap is near zero. Cross-sectional momentum is what Part 5 exploits.
 
-- **Trading simulation** — hold AAPL when model predicts positive return, cash otherwise. A 51–52% win rate can compound to a positive equity curve over thousands of days. However, round-trip transaction costs of 5–10 bps largely eliminate the edge at daily frequency.
+- **OOS R² comparison — same stock, different horizons:**
+  | Model | OOS R² |
+  |---|---|
+  | Daily AAPL \| Ridge | −0.015 |
+  | Daily AAPL \| Random Forest | −0.094 |
+  | LOB 10s AAPL \| Ridge | −0.004 |
+  | LOB 10s AAPL \| XGBoost | −0.001 |
+  | LOB 10s NVDA \| XGBoost (Part 4) | +0.00029 |
 
-- **Why single-stock prediction is hard** — ~3,500 observations over 14 years is not much data for a low signal-to-noise problem. Signal-to-noise in daily returns is notoriously low. This motivates the panel approach: the same IC of 0.03 applied consistently across 50 stocks is a much larger information advantage than for one stock alone.
+  Daily models are more negative because (1) daily momentum signals are arbitraged away by institutions; (2) 1 prediction/day gives ~252 OOS observations/year vs ~10,000/day for LOB — much harder to detect any true edge.
+
+- **Fundamentals (PE/PB/PS) limitation** — `yfinance` only returns today's snapshot. Historical point-in-time fundamentals require a paid source (Compustat, Sharadar, SimFin). Currently replaced with `mom_252d` as a directional proxy.
 
 ---
 
-## Open Questions / Next Steps
+## Part 4: LOB Feature Engineering (`DS4FE_Part4_LOB_Features.ipynb`)
 
-- **PE/PB/PS data**: add proper historical fundamentals via yfinance quarterly financials, or leave as `mom_252d` proxy?
-- **Part 4**: cross-sectional ML model on all 50 stocks simultaneously → long-short portfolio construction → Sharpe ratio analysis
-- **Part 5 (tentative)**: LOB/HFT features (order book imbalance, trade sign, intraday VWAP deviation)
+**What it covers:** Limit order book data from NASDAQ ITCH feed via Databento. Two parts: (I) data understanding + feature engineering + IC signal check; (II) walk-forward prediction with Ridge and XGBoost.
+
+**Key points:**
+
+- **Data** — Databento mbp-1 (level 1) and mbp-10 (10-level). Calm: Oct 2–12 2023 (10 days). Stress: Aug 5–9 2024 (Japan carry trade unwind). Stocks: NVDA, TSLA, AAPL, MSFT, SPY.
+
+- **Core features** — spread, mid-price, OBI (order book imbalance = (bid_sz − ask_sz)/(bid_sz + ask_sz)), OFI (order flow imbalance, Cont et al. 2014 = Δbid_queue − Δask_queue). Resampled to 1-second bars.
+
+- **IC vs OOS R²** — IC is model-free and measures average signal. OOS R² measures whether a model can exploit the signal on unseen data. Positive IC does not guarantee positive OOS R². The IC measures existence of signal; OOS R² measures exploitability.
+
+- **Walk-forward (6 train days, 1 OOS day)** — Ridge OOS R²: −0.00196. XGBoost OOS R²: +0.00029. XGBoost captures the spread-filter nonlinearity (OFI predicts only when spread is tight). Look-ahead audit: all features use past data only; scaler fit on training set only.
+
+- **Cross-asset signal** — SPY OBI lagged 1 second predicts NVDA return. Market-wide order flow leads individual stock moves.
+
+- **Calm vs stress** — stress period (Aug 5 2024) has 3.5× more book events/second. Spread widens, OFI becomes more volatile. IC of OBI and OFI both change in stressed markets.
+
+---
+
+## Part 5: Multifactor Models (`DS4FE_Part5_Multifactor.ipynb`)
+
+**What it covers:** Cross-sectional multifactor investing on the 50-stock daily panel. Fama-MacBeth regression, IC-weighted composite, long-short portfolio.
+
+**Key points:**
+
+- **Cross-sectional frame** — rank all 50 stocks by factor exposure each day. Top quintile long, bottom quintile short. Market-neutral by construction. This is the correct context for momentum and other factors — NOT predicting a single stock from its own history.
+
+- **Factors (all price-based):** `mom_1m` (reversal), `mom_12m` (momentum, IC t-stat ~2.6), `vol_63d` (low-vol anomaly), `illiq` (Amihud liquidity premium), `size` (log market cap proxy).
+
+- **Fama-MacBeth two-pass regression** — characteristics-based approach: standardized factor exposure IS the loading. Second pass: cross-sectional OLS each day → time series of premia λ_t. t-stat = mean(λ_t) / std(λ_t) × √T. Robust to cross-sectional correlation.
+
+- **IC-weighted composite** — trailing 252-day IC used as factor weights. Strictly out-of-sample (IC window shifted forward). Composite Sharpe ratio typically higher than any individual factor due to regime diversification.
+
+- **Data limitations** — no point-in-time fundamentals. `shares_out` is a current snapshot. HML and EP factors require Compustat or Sharadar. Framework is correct; better data would make it publication-quality.
+
+---
+
+## Open Questions
+
+- **Historical fundamentals**: point-in-time PE/PB/PS for value factor requires Compustat (WRDS) or Sharadar (Nasdaq Data Link).
+- **LOB multi-day OOS**: Part 4 XGBoost evaluated on 1 OOS day only. A robust estimate requires 20–30 days across different market regimes.
+- **LOB at 100ms**: internship model used 100ms data with 40+ features. Running Part 4 at 100ms would give a direct comparison.
+- **LOB multi-stock**: Part 4 uses NVDA only. Averaging OOS R² across NVDA, TSLA, AAPL, MSFT would give a more reliable signal estimate.
