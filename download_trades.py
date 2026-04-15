@@ -30,7 +30,9 @@ import pandas as pd
 import os
 
 # ── Config ─────────────────────────────────────────────────────────────────────
-API_KEY = "db-DQrsfcwsFgKHpGyRLwUGqmkndgE4A"
+API_KEY = os.environ.get("DATABENTO_API_KEY", "")
+if not API_KEY:
+    raise ValueError("Set DATABENTO_API_KEY environment variable before running.")
 
 SYMBOLS  = ["NVDA", "AAPL", "TSLA", "MSFT", "SPY"]
 DATASET  = "XNAS.ITCH"
