@@ -4,7 +4,7 @@ RA work for Professor Schafer | Limit Order Book Feature Engineering Series
 
 ---
 
-## Week 1 — 2026-03-25
+## Week 1
 
 **Started the series from scratch.**
 
@@ -20,7 +20,7 @@ RA work for Professor Schafer | Limit Order Book Feature Engineering Series
 
 ---
 
-## Week 2 — 2026-03-26 to 2026-03-27
+## Week 2
 
 **Built the LOB series (Part 4) and completed the full series audit.**
 
@@ -37,7 +37,7 @@ RA work for Professor Schafer | Limit Order Book Feature Engineering Series
 
 ---
 
-## Week 3 — 2026-04-15
+## Week 3
 
 **Split monolithic Part 4 into four focused sub-notebooks.**
 
@@ -50,7 +50,7 @@ RA work for Professor Schafer | Limit Order Book Feature Engineering Series
 
 ---
 
-## Week 4 — 2026-04-16
+## Week 4
 
 **Added trade tape data and Part 4e.**
 
