@@ -66,3 +66,20 @@ RA work for Professor Schafer | Limit Order Book Feature Engineering Series
 - Cleaned all source-attribution references from Parts 4b, 4c, 4d, 4e; replaced with neutral microstructure literature framing
 
 **Deliverables:** Part 4e executed, all notebooks clean, pushed to `main`.
+
+---
+
+## Week 5
+
+**Revised and polished Part 4a for presentation.**
+
+- Deleted old monolithic `DS4FE_Part4_LOB_Features.ipynb` (superseded by 4a–4e)
+- Fixed uint32 overflow bug in calm vs stress OBI computation (bid/ask sizes cast to int64)
+- Replaced NVDA with SPY for the calm vs stress comparison — SPY shows the textbook spread spike and OBI instability on Aug 5; NVDA's shock was overnight so intraday looked misleading
+- Fixed order book snapshot: switched from row 500 (09:30:02, book not yet built) to 11:30 ET mid-session; added int64 cast to prevent size overflow in bar chart
+- Added calm vs stress event-type grouped bar chart (normalized to %, Fill partial filtered out)
+- Added section transition markdown cells throughout: "Spread and Mid-Price Dynamics", "Spread Across Stocks", "Order Book Imbalance Over Time", "Depth Profile"
+- Added concluding Summary cell with handoff to Part 4b
+- Rewrote all em-dash heavy prose to cleaner phrasing throughout
+
+**Deliverables:** Part 4a fully polished with correct outputs; pushed to `main`.
