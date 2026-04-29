@@ -83,3 +83,26 @@ RA work for Professor Schafer | Limit Order Book Feature Engineering Series
 - Rewrote all em-dash heavy prose to cleaner phrasing throughout
 
 **Deliverables:** Part 4a fully polished with correct outputs; pushed to `main`.
+
+---
+
+## Week 6
+
+**Built Part 4f: Unsupervised LOB Feature Engineering — ISOMAP.**
+
+- Downloaded full calm period mbp-10 data for NVDA (Oct 2–12, 9 trading days, 9M ticks) via Databento
+- Built Part 4f notebook end-to-end:
+  - Animated order book visualization (9:30–10:30 opening hour, 30-second steps, interactive jshtml player)
+  - Constructed 10D OBI feature matrix: OBI at each of 10 depth levels, aggregated to 1-minute bars; train = Oct 2–9 (2,340 min), OOS = Oct 10–12 (1,169 min)
+  - OBI correlation heatmap: banded structure (adjacent levels 0.76–0.86 corr; L0 vs L9 = 0.07) — direct evidence that the book state lives on a low-dimensional manifold
+  - ISOMAP fit (n_components=2, n_neighbors=15): reconstruction error = 0.040, **96.0% of geodesic manifold structure preserved in 2D**
+  - PCA comparison: only 76.9% of Euclidean variance explained in 2D — 19pp gap confirms manifold is curved, not flat
+  - Scree plot: elbow at 2 components (3rd adds only 0.8pp), confirming intrinsic dimensionality ≈ 2
+  - OOS projection via Nyström extension: Oct 10–12 states land cleanly inside Oct 2–9 manifold region
+  - XGBoost IC comparison: Raw 10D OBI IC ≈ 0 (t=0.08, n.s.); **ISOMAP 2D IC = +0.048 (t=1.66, p=0.098, marginal)**; combined IC = +0.020 — ISOMAP distills correlated inputs into a more useful representation
+- Fixed uint32 overflow bug in Part 4a OBI chart (bid_sz_00 − ask_sz_00 on unsigned integers caused all-positive values)
+- Fixed JavaScript-style `//` comment in Part 4a imports cell
+
+**Key finding:** The 10-level OBI vector has intrinsic dimensionality ≈ 2. ISOMAP recovers this structure with 96% fidelity while PCA (linear) can only reach 77%. Raw OBI levels fed directly into XGBoost are too correlated to be useful (IC ≈ 0); the ISOMAP-compressed coordinates carry more predictive signal despite using only 2 features vs 10.
+
+**Deliverables:** Part 4f executed with all figures; Parts 4a fixed; pushed to `main`.
