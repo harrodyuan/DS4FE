@@ -1,6 +1,7 @@
 .DS_Store
 DSII/
 data/
+Reference/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
