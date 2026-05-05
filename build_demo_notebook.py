@@ -167,18 +167,27 @@ The ISOMAP panel (top-left) shows that open and close bars tend to occupy a diff
 To give the axes an economic label, compute the Spearman correlation between each ISOMAP coordinate and the raw OBI at each of the 10 depth levels:
 """))
 
-cells.append(code("display(Image('figures/4f_isomap_depth_profile.png'))"))
+cells.append(code("display(Image('figures/4g_NVDA_depth_profile_full.png'))"))
 
-# FIX 6: fix Z₂ sign — reviewer confirmed graph shows Z₂ negative near top, positive deeper
 cells.append(md("""
-**Z₁** has the same sign across all 10 levels and peaks at L5–L6 (mid-book). It measures how bullish or bearish the entire stack is — a book-wide consensus signal.
+**Z₁** has the same sign across all 10 levels and peaks at L6 (ρ = 0.88 in the full-October fit). Every depth level contributes to Z₁ in the same direction — it measures how bullish or bearish the *entire* book stack is. A high-Z₁ minute means the book is bid-heavy from top to bottom; a low-Z₁ minute means it is ask-heavy from top to bottom.
 
-**Z₂** changes sign across depth. In this fit it is negative near the top of book and positive deeper in the book. It captures the contrast between the near-book and the deep book — two parts of the order book that can lean in opposite directions. The sign of Z₂ is arbitrary (ISOMAP can flip an axis without changing the geometry); a different fit may reflect it. What is stable across fits is the *crossing pattern* — the fact that Z₂ changes sign somewhere in the L4–L5 range.
+**Z₂** is negative near the top of book (L0 ρ = −0.72) and crosses zero between L4 and L5, becoming positive in the deep book (L9 ρ = +0.33). It captures the contrast between the near-book and the deep book — parts of the order book that often lean in opposite directions. The sign of Z₂ is arbitrary (ISOMAP can flip an axis without changing geometry); what is stable is the *crossing pattern* around L4–L5.
 
-The scatter grids below show Z₁ vs Z₂ for each OBI level individually. The dominant color gradient rotates as you move from shallow to deep levels, directly visualising the crossing point.
+**Why not Z₃?** The third component (right panel) has a maximum |ρ| of 0.45 and no consistent pattern across depth — positive near L0, turning negative mid-book, positive again at L9. There is no clean economic label for this shape. Both the scree elbow (< 1 pp gain from a third component) and the uninterpretable depth profile point to the same conclusion: two coordinates are enough.
+
+The figure below makes the axis interpretation concrete by showing the average OBI profile for bars at the extremes of each coordinate:
 """))
 
-cells.append(code("display(Image('figures/4f_isomap_all_levels.png'))"))
+cells.append(code("display(Image('figures/4g_NVDA_axis_profiles.png'))"))
+
+cells.append(md("""
+**Top row — Z₁ extremes:** High-Z₁ bars (top 15%) have OBI ranging from +0.04 at L0 to +0.16 at L6 — the entire book leans bid-side, with the largest imbalance in the mid-book where market makers post the most resting size. Low-Z₁ bars are the mirror image (−0.09 to −0.19), with the whole stack leaning ask-side.
+
+**Bottom row — Z₂ extremes:** High-Z₂ bars show near-book OBI of −0.12 (ask-heavy at L0–L3) while the deep book is +0.04 (mildly bid-heavy at L5–L9). Low-Z₂ bars reverse this: near-book +0.08, deep book −0.07. The two halves of the book are pulling in opposite directions.
+
+These patterns emerge purely from the geometry of the data — ISOMAP was not told about depth levels, bid/ask directions, or economic intuition.
+"""))
 
 # ── Section 6 ─────────────────────────────────────────────────────────────────
 cells.append(md("""
