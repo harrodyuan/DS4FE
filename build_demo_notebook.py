@@ -138,6 +138,16 @@ cells.append(code("display(Image('figures/4g_NVDA_dr_quality.png'))"))
 
 cells.append(md("""
 Trustworthiness and Continuity measure whether the embedding preserves local neighborhood structure (independent of the geodesic criterion). Both metrics exceed 0.97 for ISOMAP across all three stocks, confirming that the 2D embedding is not distorting local structure while optimising global distances.
+
+### Sensitivity to the choice of k
+
+ISOMAP requires choosing a number of neighbors $k$. The result should not depend sensitively on this choice — if it did, the manifold would not be a stable description of the data.
+"""))
+
+cells.append(code("display(Image('figures/4g_NVDA_neighbor_sensitivity.png'))"))
+
+cells.append(md("""
+The 2D fidelity is stable from k=5 through k=50: the residual decreases monotonically from 0.049 to 0.020 as k grows (more neighbors → smoother geodesic graph → lower residual), but the qualitative result — a strong 2D elbow — holds at every value tested. The per-symbol figures use k=15; the joint model and stress projection use k=30. Neither choice is fragile.
 """))
 
 # ── Section 5 ─────────────────────────────────────────────────────────────────
