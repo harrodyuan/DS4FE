@@ -2,7 +2,7 @@
 Rebuild DS4FE_ISOMAP_Demo.ipynb with clean 8-section structure.
 Run:  python build_demo_notebook.py
 """
-import json, sys
+import json
 
 def md(src):
     return {"cell_type": "markdown", "metadata": {}, "source": src.lstrip('\n'), "outputs": []}
@@ -19,12 +19,13 @@ def code(src):
 cells = []
 
 # ── Cell 0: Title ─────────────────────────────────────────────────────────────
+# FIX 1: removed "~50 M ticks per symbol" — raw count is misleading as a headline stat
 cells.append(md("""
 # ISOMAP for Limit Order Books
 
 **Goal.** The 10-level order book produces a 10-dimensional feature vector every minute. This notebook asks whether all 10 dimensions are necessary, or whether two coordinates capture the essential structure — and what those coordinates mean economically.
 
-**Data.** Databento mbp-10 snapshots for NVDA, AAPL, MSFT — full October 2023 (22 trading days, ~50 M ticks per symbol).
+**Data.** Databento mbp-10 snapshots for NVDA, AAPL, MSFT — full October 2023 (22 trading days). After 1-minute aggregation the working matrix has roughly 8,580 bars per symbol.
 
 **Feature.** 1-minute Order Book Imbalance at each depth level $k$:
 
@@ -37,49 +38,53 @@ $k = 0$ is the top of book; $k = 9$ is the deepest level available in the feed.
 cells.append(code("from IPython.display import Image, display"))
 
 # ── Cell 2: Section 1 ─────────────────────────────────────────────────────────
+# FIX 1 (continued): raw data section no longer claims "50M ticks per day"
 cells.append(md("""
 ---
 ## 1. The Raw Data
 
-Each row in the dataset is a full 10-level order book snapshot — one snapshot is generated every time any order is placed, modified, or cancelled. For NVDA in October 2023 that is roughly 50 million ticks per day.
+Each row in the dataset is a full 10-level order book snapshot — one snapshot is generated every time any order is placed, modified, or cancelled. The raw files contain tens of millions of event-level updates over the full October sample; after 1-minute aggregation the working matrix has roughly 8,580 bars per symbol.
 
 The snapshot below is taken just after the open (09:30 ET). Bid sizes are positive, ask sizes are negative.
 """))
 
 cells.append(code("display(Image('figures/4f_ob_snapshot.png'))"))
 
+# FIX 2: snapshot description — don't claim it looks "balanced"; use the graph honestly
 cells.append(md("""
-The spread is tight and the book is relatively balanced at this moment. Near the open and close the profile is more extreme — wider spread, thinner inside levels, larger imbalances.
+A single event-level snapshot can be noisy and uneven — resting sizes vary considerably across levels and the book is rarely perfectly symmetric at any given moment. That is why we aggregate into 1-minute OBI profiles before doing any analysis: averaging over potentially thousands of updates within a minute gives a stable summary of the book's directional lean.
 
 ### From tick-level snapshots to 1-minute bars
 
-Taking the mean OBI within each minute gives a stable summary of the book state for that minute. The result is a matrix of shape (minutes × 10). For October 2023 that is roughly 8,580 bars per symbol.
+Taking the mean OBI within each minute gives a matrix of shape (minutes × 10). The figure below shows the full 1-minute OBI time series for one trading day across all 10 depth levels.
 """))
 
 cells.append(code("display(Image('figures/4f_obi_structure.png'))"))
 
-# ── Cell 6: Section 2 ─────────────────────────────────────────────────────────
+# ── Section 2 ─────────────────────────────────────────────────────────────────
+# FIX 3: reordered narrative — heatmap before correlation text, both before ISOMAP motivation
 cells.append(md("""
 ---
 ## 2. Why Should the Book State Be Low-Dimensional?
 
-The 10 OBI levels are not independent. Adjacent levels tend to move together — if the bid is heavy at L2, it is usually heavy at L3 too. The correlation matrix makes this concrete:
+The 10 OBI levels are not independent. Adjacent levels tend to move together — if the bid is heavy at L2, it is usually heavy at L3 too. The cross-level correlation matrix makes this concrete:
 """))
 
 cells.append(code("display(Image('figures/4f_obi_heatmap.png'))"))
 
 cells.append(md("""
-Nearby levels are correlated — L0 and L1 share a Spearman ρ of about 0.61, rising to 0.86 for L7–L8. The far ends of the book (L0 vs L9) are nearly uncorrelated at 0.11. The book does not fill all 10 dimensions — it lives near a lower-dimensional surface inside that space.
+Nearby levels are correlated — L0 and L1 share a Spearman ρ of about 0.61, rising to 0.86 for L7–L8. The far ends of the book (L0 vs L9) are nearly uncorrelated at 0.11. The book does not fill all 10 dimensions independently — it lives near a lower-dimensional surface inside that space. That surface is what we want to find.
 """))
 
-# ── Cell 9: Section 3 ─────────────────────────────────────────────────────────
+# ── Section 3 ─────────────────────────────────────────────────────────────────
+# FIX 4: note k=15 vs k=30 difference to avoid inconsistency with displayed figures
 cells.append(md("""
 ---
 ## 3. ISOMAP — A Three-Step Pipeline
 
 ISOMAP recovers the low-dimensional manifold that the data lies near. It has three steps.
 
-**Step 1 — k-NN graph.** Connect each 1-minute bar to its $k = 30$ nearest neighbors in the 10D OBI space. Two bars are neighbors if their full book profiles are similar at all levels.
+**Step 1 — k-NN graph.** Connect each 1-minute bar to its $k$ nearest neighbors in the 10D OBI space. Two bars are neighbors if their full book profiles are similar at all levels. The single-symbol figures in this notebook use $k = 15$; the pooled joint model and stress projection use $k = 30$ because the denser dataset supports a larger neighborhood.
 
 **Step 2 — Geodesic distances.** For bars that are not direct neighbors, compute the shortest path through the graph (Dijkstra's algorithm). This is the *geodesic* distance — measured along the manifold surface rather than through empty space. If the manifold curves, the straight-line Euclidean distance cuts through regions no real bar occupies; the geodesic respects the shape.
 
@@ -88,51 +93,54 @@ ISOMAP recovers the low-dimensional manifold that the data lies near. It has thr
 In code, the full pipeline is five lines:
 """))
 
+# ISOMAP code as a markdown fence — illustrative, not executed
 cells.append(md("""\
 ```python
 from sklearn.manifold import Isomap
 
-isomap = Isomap(n_neighbors=30, n_components=2)
+isomap = Isomap(n_neighbors=15, n_components=2)
 Z_train = isomap.fit_transform(X_train)   # X_train: (n_bars, 10) OBI matrix
 Z_oos   = isomap.transform(X_oos)         # Nyström extension for held-out bars
 print(f"Reconstruction error: {isomap.reconstruction_error():.4f}")
-# → 0.028  (2.8% — 97.2% of geodesic variance preserved)
 ```
 """))
 
-# ── Cell 11: Section 4 ────────────────────────────────────────────────────────
+# ── Section 4 ─────────────────────────────────────────────────────────────────
+# FIX 5: soften "97% preserved" language — this is a geometry-fidelity measure, not PCA-style
+#         explained variance; the two should not be compared as if they are the same thing
 cells.append(md("""
 ---
 ## 4. Does Two Dimensions Capture Enough?
 
-The reconstruction error measures how much of the manifold's geodesic structure is lost when projecting to 2D:
+The ISOMAP reconstruction error measures how much of the manifold's geodesic structure is lost in the 2D projection:
 
 $$\\text{Reconstruction error} = \\frac{\\operatorname{Var}(d_{\\text{geo}} - d_{\\text{embed}})}{\\operatorname{Var}(d_{\\text{geo}})}$$
 
-Zero is a perfect embedding; one means the embedding is no better than predicting the mean distance. PCA minimises a similar criterion but over Euclidean distances, which assumes the manifold is flat.
+Zero is a perfect embedding; one means the embedding is no better than predicting the mean distance. Note that this is a *geometry-fidelity* measure specific to ISOMAP — it is not directly comparable to PCA explained variance, which is defined over Euclidean distances. The scree plot below reports $(1 - \\text{residual})$ for ISOMAP alongside $(1 - \\text{residual})$ for PCA, where PCA's residual is computed the same way for comparability.
 """))
 
 cells.append(code("display(Image('figures/4g_NVDA_scree.png'))"))
 
+# FIX 5 (continued): use "low residual" and "elbow" language rather than "97.2% fidelity"
 cells.append(md("""
-The scree plot shows ISOMAP and PCA residuals as a function of number of components. ISOMAP reaches 97.2% fidelity with 2 components; PCA needs more components to reach the same fidelity because it cannot follow the curvature of the manifold.
+The scree curve has a clear elbow at two components for ISOMAP. Adding a third component reduces the residual by less than one percentage point. PCA needs more components to reach the same residual level, because it cannot follow the curvature of the manifold. The ISOMAP advantage is largest for NVDA.
 
 | | NVDA | AAPL | MSFT | Joint (pooled) |
 |---|---|---|---|---|
-| **ISOMAP 2D preserved** | **97.2%** | **96.7%** | **96.7%** | **97.3%** |
-| PCA 2D variance | 78.6% | 82.2% | 87.0% | 81.9% |
+| ISOMAP 2D (1 − residual) | 97.2% | 96.7% | 96.7% | 97.3% |
+| PCA 2D (1 − residual) | 78.6% | 82.2% | 87.0% | 81.9% |
 | Gap | +18.6 pp | +14.5 pp | +9.7 pp | +15.4 pp |
 
-The gap is not a tuning choice — it comes from curvature in the book state manifold. The ISOMAP advantage is largest for NVDA, which has the most liquid book and the most active order flow.
+The gap is consistent across all four fits. It comes from curvature in the book state manifold — a structure that a flat PCA projection cannot capture.
 """))
 
 cells.append(code("display(Image('figures/4g_NVDA_dr_quality.png'))"))
 
 cells.append(md("""
-Trustworthiness and Continuity measure whether the embedding preserves the *local* neighborhood structure. Both exceed 0.97 for ISOMAP. The gap over PCA is consistent across all three stocks, confirming that the book state manifold has genuine curvature that a flat projection cannot follow.
+Trustworthiness and Continuity measure whether the embedding preserves local neighborhood structure (independent of the geodesic criterion). Both metrics exceed 0.97 for ISOMAP across all three stocks, confirming that the 2D embedding is not distorting local structure while optimising global distances.
 """))
 
-# ── Cell 16: Section 5 ────────────────────────────────────────────────────────
+# ── Section 5 ─────────────────────────────────────────────────────────────────
 cells.append(md("""
 ---
 ## 5. What Do Z₁ and Z₂ Capture?
@@ -142,47 +150,50 @@ The 2D ISOMAP output assigns each 1-minute bar a pair of coordinates $(Z_1, Z_2)
 
 cells.append(code("display(Image('figures/4g_NVDA_dr_tod.png'))"))
 
+# FIX 7: soften time-of-day separation claim
 cells.append(md("""
-The ISOMAP panel (top-left) shows a tendency for bars from the open and close to cluster away from mid-day bars, though the separation is partial — the book visits similar states at different times of day. This structure was not given to the model; it comes from book geometry.
+The ISOMAP panel (top-left) shows that open and close bars tend to occupy a different part of the learned space from mid-day bars, though the separation is partial and not categorical — the book revisits similar states at different times. This structure was not given to the model; it comes from the geometry of the observed OBI profiles.
 
-To label the axes economically, compute the Spearman correlation between each ISOMAP coordinate and the raw OBI at each of the 10 depth levels:
+To give the axes an economic label, compute the Spearman correlation between each ISOMAP coordinate and the raw OBI at each of the 10 depth levels:
 """))
 
 cells.append(code("display(Image('figures/4f_isomap_depth_profile.png'))"))
 
+# FIX 6: fix Z₂ sign — reviewer confirmed graph shows Z₂ negative near top, positive deeper
 cells.append(md("""
 **Z₁** has the same sign across all 10 levels and peaks at L5–L6 (mid-book). It measures how bullish or bearish the entire stack is — a book-wide consensus signal.
 
-**Z₂** is positive at the shallow levels (L0–L4) and crosses zero around L4–L5, turning negative at the deep levels. It measures the contrast between the near-book and the deep book — two parts of the order book that can lean in opposite directions. The sign of this axis is arbitrary (ISOMAP sign-flips are common across fits); what matters is the crossing pattern.
+**Z₂** changes sign across depth. In this fit it is negative near the top of book and positive deeper in the book. It captures the contrast between the near-book and the deep book — two parts of the order book that can lean in opposite directions. The sign of Z₂ is arbitrary (ISOMAP can flip an axis without changing the geometry); a different fit may reflect it. What is stable across fits is the *crossing pattern* — the fact that Z₂ changes sign somewhere in the L4–L5 range.
 
 The scatter grids below show Z₁ vs Z₂ for each OBI level individually. The dominant color gradient rotates as you move from shallow to deep levels, directly visualising the crossing point.
 """))
 
 cells.append(code("display(Image('figures/4f_isomap_all_levels.png'))"))
 
-# ── Cell 23: Section 6 ────────────────────────────────────────────────────────
+# ── Section 6 ─────────────────────────────────────────────────────────────────
 cells.append(md("""
 ---
 ## 6. Out-of-Sample Generalization
 
-The ISOMAP is trained on the first 75% of October. The remaining 25% is held out and projected using the Nyström extension (`isomap.transform()`). A well-learned manifold should accommodate OOS bars inside the training region.
+The ISOMAP is trained on the first 75% of October. The remaining 25% is held out and projected using the Nyström extension (`isomap.transform()`). A well-learned manifold should accommodate OOS bars inside the region covered by the training set.
 """))
 
 cells.append(code("display(Image('figures/4f_oos_projection.png'))"))
 
 cells.append(md("""
-OOS bars land inside the region covered by the training set. The learned manifold structure is stable over the hold-out period — it is not overfitting the specific dates used for training.
+OOS bars land inside the region covered by the training set. The learned manifold structure is stable over the hold-out period.
 
-Does the 2D representation help with short-horizon return prediction?
+Does the 2D representation contain any short-horizon return signal?
 """))
 
 cells.append(code("display(Image('figures/4g_NVDA_oos_ic.png'))"))
 
+# FIX 8 (OOS IC): "marginally positive" → be more honest about statistical weakness
 cells.append(md("""
-The ISOMAP 2D coordinates produce a marginally positive out-of-sample information coefficient — larger than raw OBI (which cancels across levels) and consistent in direction. The signal is small; treat it as evidence that some return-relevant structure is captured, not a trading signal on its own.
+The ISOMAP 2D IC is slightly positive for NVDA in this sample, and larger than the raw OBI IC (which tends to cancel across levels). The p-value is around 0.20 — not statistically strong. The main value of the representation is not standalone return prediction; it is a compact, interpretable description of book state that can be used as input to downstream models or as a baseline for stress detection.
 """))
 
-# ── Cell 28: Section 7 ────────────────────────────────────────────────────────
+# ── Section 7 ─────────────────────────────────────────────────────────────────
 cells.append(md("""
 ---
 ## 7. Does the Same Structure Appear in Other Stocks?
@@ -191,7 +202,7 @@ The analysis above used NVDA. Fitting the same pipeline independently on AAPL an
 
 | | NVDA | AAPL | MSFT | Joint (pooled) |
 |---|---|---|---|---|
-| ISOMAP 2D preserved | 97.2% | 96.7% | 96.7% | 97.3% |
+| ISOMAP 2D (1 − residual) | 97.2% | 96.7% | 96.7% | 97.3% |
 | Z₁ peak level | L6 | L7 | L4 | L5 |
 | Z₂ sign-flip around | L4–L5 | L5–L6 | L4 | L5 |
 | Best K (UMAP) | 2 | 2 | 2 | 2 |
@@ -203,38 +214,40 @@ The joint embedding below fits one ISOMAP on the ~26,000-bar pooled matrix:
 
 cells.append(code("display(Image('figures/4h_joint_embedding.png'))"))
 
+# FIX 9: fix overclaim that "time of day is stronger than stock identity"
 cells.append(md("""
-**Left — by symbol:** NVDA, AAPL, and MSFT points substantially overlap on the shared manifold. There is no clean region that belongs to one stock only. The book geometry is driven by *market-wide microstructure regimes* rather than stock-specific signals.
+**Left — by symbol:** NVDA, AAPL, and MSFT points substantially overlap on the shared manifold. There is no clean region that belongs to one stock only. The book geometry is driven by market-wide structure rather than stock-specific signals.
 
-**Right — by time of day:** The familiar open/close vs. mid-day structure reappears in the pooled embedding — now spanning all three symbols. Time of day is a stronger organising dimension than stock identity.
+**Right — by time of day:** Time-of-day patterns are visible, especially near the open and close, but the joint embedding is best interpreted as a shared book-state space rather than a pure time-of-day map — many states are visited at multiple times of day.
 """))
 
 cells.append(code("display(Image('figures/4h_joint_depth_profile.png'))"))
 
 cells.append(md("""
-The joint depth profile replicates the per-symbol pattern: Z₁ peaks at L5, Z₂ crosses zero at L4–L5. The two-axis interpretation is not a per-symbol artifact — it is a structural property of LOB geometry that survives pooling across stocks.
+The joint depth profile replicates the per-symbol pattern: Z₁ peaks at L5, Z₂ changes sign around L4–L5. The two-axis interpretation survives pooling across stocks — it is not a per-symbol artifact.
 """))
 
-# ── Cell 34: Section 8 ────────────────────────────────────────────────────────
+# ── Section 8: Stress Projection ──────────────────────────────────────────────
+# FIX 10: correct BOJ chronology — rate hike was July 31, selloff was August 5
 cells.append(md("""
 ---
 ## 8. Stress Period Projection: The BOJ Shock Week
 
-On August 5 2024, the Bank of Japan raised rates unexpectedly. The yen strengthened sharply, unwinding carry trades. NVDA fell from ~$110 to ~$92 intraday (−16%). The VIX opened near 65 — highest since March 2020.
+The Bank of Japan's July 31, 2024 rate-hike decision, effective August 1, triggered a rapid unwind of yen carry trades. On August 5, global equity markets sold off sharply and volatility spiked: the VIX opened near 65 (highest since March 2020), and NVDA fell from ~$110 to ~$92 intraday (−16%).
 
 The ISOMAP trained on calm October 2023 provides a coordinate system. Projecting the August shock week onto it asks: *do stress-period book states look geometrically unusual?*
 
 Two representations are compared:
 - **Model A (OBI means only, 10 features):** the same feature set used throughout this notebook
-- **Model B (OBI means + within-minute OBI std, 20 features):** adds a second moment capturing how volatile the book was within each 1-minute bar
+- **Model B (OBI means + within-minute OBI std, 20 features):** adds a second moment capturing how stable the book was within each 1-minute bar
 """))
 
 cells.append(code("display(Image('figures/4i_model_comparison.png'))"))
 
 cells.append(md("""
-**Model A (left):** Stress bars land almost entirely inside the calm cloud. Only 3.6% fall outside the calm 95th percentile in manifold distance. The 1-minute mean OBI washes out the directional signal: during a directional crash, every update within a minute points the same way, so the mean is moderate and unremarkable.
+**Model A (left):** Stress bars land almost entirely inside the calm cloud. Only 3.6% fall outside the calm 95th percentile. The 1-minute mean OBI washes out the directional signal: during a directional crash, every update within a minute points the same way, so the mean is moderate and unremarkable.
 
-**Model B (right):** Stress bars clearly shift away from the calm region. 16.8% are outside the calm 95th percentile, and the stress mean distance is **2× the calm mean**. The within-minute OBI standard deviation is lower during the crash (every update aligned → less within-minute variance), and this second-moment difference is what separates stress from calm on the manifold.
+**Model B (right):** Stress bars shift away from the calm region. 16.8% are outside the calm 95th percentile, and the stress mean distance is **2× the calm mean**. The within-minute OBI standard deviation is lower during the crash (every update aligned → less within-minute variance), and this second-moment difference is what separates stress from calm on the manifold.
 
 | | Model A (means only) | Model B (means + std) |
 |---|---|---|
@@ -242,33 +255,39 @@ cells.append(md("""
 | Stress bars outside calm 95th | 3.6% | **16.8%** |
 | Stress mean distance / Calm mean | 0.91× | **2.04×** |
 
-The stress separation increases through the week — 8.2% on Aug 5 (crash day, most directional) to 25.2% on Aug 9 (recovery, buyers and sellers disagreeing). The crash itself looks calmer in manifold distance than the days that follow, because price discovery during a one-way move outpaces the book's ability to explore different states.
+The stress separation increases through the week — 8.2% on Aug 5 (crash day, most directional) to 25.2% on Aug 9 (recovery, buyers and sellers disagreeing).
 """))
 
 cells.append(code("display(Image('figures/4i_aug5_path.png'))"))
 
 cells.append(md("""
-The minute-by-minute trajectory on Aug 5 starts in the upper-left (crash open, gold star) and moves through a sparse region of the manifold. The path is directed and compact — the book does not backtrack much, consistent with sustained one-way selling pressure. By the close (black diamond) the book is in a region that corresponds to calm late-afternoon configurations.
+The minute-by-minute trajectory on Aug 5 starts in the upper-left (crash open, gold star) and moves through a sparse region of the manifold. The path is directed and compact — the book does not backtrack much, consistent with sustained one-way selling pressure. By the close (black diamond) the book has drifted to a region that corresponds to calm late-afternoon configurations.
 """))
 
 cells.append(code("display(Image('figures/4i_manifold_distance.png'))"))
 
+# FIX 11: fix "persistently above" contradiction — only 16.8% are outside 95th,
+#          not "every" bar; spike language is correct but "persistently" is wrong
 cells.append(md("""
-Manifold distance is persistently above the calm 95th percentile throughout the week (top panel), with the largest spikes at market open each day — when the book has the most unusual configuration relative to its calm-period counterpart.
+The stress distance distribution shifts upward throughout the week, with the most extreme spikes concentrated at market open each day — when the book has the most unusual configuration relative to its calm-period counterpart. Not every stress bar exceeds the calm 95th percentile; 16.8% do under Model B, compared to 5% by construction for calm. The elevated tail is the signal.
 
-The return volatility panel (bottom) tells the complementary story: Aug 5 has the highest daily vol but is not the most anomalous day in manifold distance. The structural unusualness of the book peaks during the recovery, when market participants are actively reassessing direction — a different kind of stress than a one-way crash.
+The return volatility panel (bottom) tells the complementary story: Aug 5 has the highest daily vol but is not the most anomalous day in manifold distance. The structural unusualness of the book peaks during the recovery, when market participants are actively reassessing direction.
 """))
 
-# ── Cell 42: Conclusion ───────────────────────────────────────────────────────
+# ── Conclusion ────────────────────────────────────────────────────────────────
+# FIX 12: rewrite conclusion — state representation + stress detection, not prediction;
+#          soften "97% fidelity" claim; acknowledge Z₂ sign arbitrariness
 cells.append(md("""
 ---
 ## Conclusion
 
-Across NVDA, AAPL, and MSFT, the 10-level OBI matrix consistently has an intrinsic dimensionality of 2. ISOMAP recovers this structure with 97%+ fidelity versus 79–87% for PCA — the gap reflects curvature in the book state manifold that a flat projection cannot follow.
+The 10-level OBI matrix has a clear 2D structure across NVDA, AAPL, MSFT, and the pooled joint model. ISOMAP's residual drops sharply at two components for all four fits, and the gap over PCA is consistent — reflecting genuine curvature in the book state manifold that a flat projection cannot follow.
 
-The two coordinates have a consistent interpretation across all fits, per-symbol and joint: Z₁ measures book-wide consensus (how far the entire stack tilts in one direction), and Z₂ measures the contrast between the near-book and the deep book. This pattern is not a modelling choice; it emerged from the geometry of the data in every case tested.
+The two coordinates have a stable interpretation: Z₁ is a broad book-wide consensus axis; Z₂ captures the contrast between near-book and deep-book imbalance, changing sign around the L4–L5 boundary. The exact sign of Z₂ can flip between fits — that is a known property of ISOMAP — but the crossing pattern and the economic interpretation are consistent across all stocks tested.
 
-The stress projection result makes the distinction practical. Calm-period OBI means alone do not flag the August 2024 crash: the 1-minute mean is moderate even when every update within that minute points in the same direction. Adding the within-minute OBI standard deviation reveals the structural change: a more directional, less flickering book during the crash, detectable without labels, price data, or model retraining. 16.8% of stress bars fall outside the calm 95th percentile in manifold distance — a four-fold increase over the mean-only representation.
+The stress projection is the practical test. Mean OBI alone (Model A) does not separate calm from stressed book states — the 1-minute mean is unremarkable even during a directional crash where every update within the minute points the same way. Adding within-minute OBI standard deviation (Model B) reveals a structural difference: a more directional, less-flickering book during stress. 16.8% of stress bars fall outside the calm 95th percentile in manifold distance, compared to 3.6% with means alone.
+
+The main contribution here is a state representation for liquidity-regime detection, not standalone return prediction. The geometry of the order book encodes information about the market's current regime that is not visible in the 1-minute mean OBI alone.
 """))
 
 # ── Assemble notebook ─────────────────────────────────────────────────────────
