@@ -131,7 +131,15 @@ The scree curve has a clear elbow at two components for ISOMAP. Adding a third c
 | PCA 2D (1 − residual) | 78.6% | 82.2% | 87.0% | 81.9% |
 | Gap | +18.6 pp | +14.5 pp | +9.7 pp | +15.4 pp |
 
-The gap is consistent across all four fits. It comes from curvature in the book state manifold — a structure that a flat PCA projection cannot capture.
+The gap is consistent across all four fits. But does this mean ISOMAP finds more *interpretable* axes than PCA? The answer is no — and that is actually reassuring.
+"""))
+
+cells.append(code("display(Image('figures/4g_NVDA_isomap_vs_pca_axes.png'))"))
+
+cells.append(md("""
+The depth profiles for ISOMAP (top) and PCA (bottom) are nearly identical. PCA Z₁ peaks at L6 with ρ = 0.88 — the same as ISOMAP Z₁. PCA Z₂ is a sign-flip of ISOMAP Z₂, with the same crossing pattern at L4–L5.
+
+**What this tells us:** The two-axis structure is real and method-independent. It is not an artifact of ISOMAP's nonlinear fitting — it is a genuine feature of the LOB data that any reasonable dimensionality reduction will find. PCA's advantage is its linear simplicity; ISOMAP's advantage is that it preserves 97% of the manifold's geodesic structure versus 78% for PCA. The axes are equivalent; the geometry is not.
 """))
 
 cells.append(code("display(Image('figures/4g_NVDA_dr_quality.png'))"))
@@ -257,9 +265,12 @@ The Bank of Japan's July 31, 2024 rate-hike decision, effective August 1, trigge
 
 The ISOMAP trained on calm October 2023 provides a coordinate system. Projecting the August shock week onto it asks: *do stress-period book states look geometrically unusual?*
 
-Two representations are compared:
-- **Model A (OBI means only, 10 features):** the same feature set used throughout this notebook
-- **Model B (OBI means + within-minute OBI std, 20 features):** adds a second moment capturing how stable the book was within each 1-minute bar
+Two representations are compared, each fitted as a separate ISOMAP on the calm October 2023 training data:
+
+- **Model A (10 features — OBI means only):** the same feature vector used in Sections 1–7. Each bar is a 10D vector of per-level OBI means. One ISOMAP is trained on this.
+- **Model B (20 features — OBI means + within-minute OBI std):** adds the standard deviation of OBI *within* each 1-minute bar. This second moment captures how consistently the book leaned in one direction during that minute — not just what direction it leaned on average. A separate ISOMAP is trained on this 20D representation using the same calm October data.
+
+Both models are trained on calm data only. The stress week is projected in using the Nyström extension — no retraining.
 """))
 
 cells.append(code("display(Image('figures/4i_model_comparison.png'))"))
@@ -278,10 +289,14 @@ cells.append(md("""
 The stress separation increases through the week — 8.2% on Aug 5 (crash day, most directional) to 25.2% on Aug 9 (recovery, buyers and sellers disagreeing).
 """))
 
-cells.append(code("display(Image('figures/4i_aug5_path.png'))"))
+cells.append(code("display(Image('figures/4i_calm_vs_stress_path.png'))"))
 
 cells.append(md("""
-The minute-by-minute trajectory on Aug 5 starts in the upper-left (crash open, gold star) and moves through a sparse region of the manifold. The path is directed and compact — the book does not backtrack much, consistent with sustained one-way selling pressure. By the close (black diamond) the book has drifted to a region that corresponds to calm late-afternoon configurations.
+**Left (Oct 11, typical calm day):** The path wanders broadly across the manifold — open and close at different corners, mid-day oscillating between them. Path length is long relative to the calm average, with the book exploring many different configurations. 5% of bars (the base rate) fall outside the calm 95th percentile.
+
+**Right (Aug 5, crash day):** The trajectory starts far from the calm centroid (gold star, 09:30 open) and moves through a sparse region of the manifold in a directed, compact arc. The book does not backtrack much — every minute the book is in essentially the same configuration as the previous one. 8% of bars exceed the calm 95th percentile, clustered at the open.
+
+The contrast makes the "shorter path" result concrete: it is not that Aug 5 is quiet — it is that the book is *locked* into a narrow region of state space while producing large price moves.
 """))
 
 cells.append(code("display(Image('figures/4i_manifold_distance.png'))"))
@@ -292,6 +307,25 @@ cells.append(md("""
 The stress distance distribution shifts upward throughout the week, with the most extreme spikes concentrated at market open each day — when the book has the most unusual configuration relative to its calm-period counterpart. Not every stress bar exceeds the calm 95th percentile; 16.8% do under Model B, compared to 5% by construction for calm. The elevated tail is the signal.
 
 The return volatility panel (bottom) tells the complementary story: Aug 5 has the highest daily vol but is not the most anomalous day in manifold distance. The structural unusualness of the book peaks during the recovery, when market participants are actively reassessing direction.
+"""))
+
+cells.append(code("display(Image('figures/4i_regime_detector.png'))"))
+
+cells.append(md("""
+A simple threshold rule — flag any minute where augmented manifold distance exceeds the calm 95th percentile — produces the detection rates above. The calm base rate is 5% by construction.
+
+| Date | Event | % bars flagged | First alert | Max consecutive |
+|------|--------|---------------|-------------|-----------------|
+| Aug 5 | Crash (−16% intraday) | 7.9% | **09:30 ET** | 3 min |
+| Aug 6 | Partial bounce | 13.8% | 10:35 ET | 3 min |
+| Aug 7 | Continued recovery | 15.9% | 10:14 ET | 4 min |
+| Aug 8 | Recovery stalls | 20.8% | 10:16 ET | 5 min |
+| Aug 9 | Range-bound / uncertain | **25.1%** | 10:25 ET | **13 min** |
+| Calm (Oct 2023) | Baseline | 5.0% | — | — |
+
+Aug 5 fires its first alert at 09:30 — the opening minute of trading. The crash day is actually the *easiest* to catch early but the *least* structurally abnormal overall: the book is directionally locked from the open, which makes it unusual at the open but consistent thereafter. Aug 9, the recovery stall, has the most extended unusual period — 13 consecutive flagged minutes — because buyers and sellers are actively fighting over direction, producing a book that switches between unusual configurations repeatedly.
+
+No labels, no price data, no model retraining. The manifold geometry flags the stress period from the calm training set alone.
 """))
 
 # ── Conclusion ────────────────────────────────────────────────────────────────
