@@ -158,11 +158,10 @@ cells.append(md("""
 The 2D ISOMAP output assigns each 1-minute bar a pair of coordinates $(Z_1, Z_2)$. ISOMAP has no knowledge of time, returns, or which stock the bar came from. The coloring below is added after the fact.
 """))
 
-cells.append(code("display(Image('figures/4g_NVDA_dr_tod.png'))"))
+cells.append(code("display(Image('figures/4g_NVDA_isomap_tod.png'))"))
 
-# FIX 7: soften time-of-day separation claim
 cells.append(md("""
-The ISOMAP panel (top-left) shows that open and close bars tend to occupy a different part of the learned space from mid-day bars, though the separation is partial and not categorical — the book revisits similar states at different times. This structure was not given to the model; it comes from the geometry of the observed OBI profiles.
+Open and close bars tend to cluster away from mid-day bars, though the separation is partial — the book revisits similar states at different times of day. This structure was not given to the model; it comes from the geometry of the observed OBI profiles.
 
 To give the axes an economic label, compute the Spearman correlation between each ISOMAP coordinate and the raw OBI at each of the 10 depth levels:
 """))
@@ -187,6 +186,8 @@ cells.append(md("""
 **Bottom row — Z₂ extremes:** High-Z₂ bars show near-book OBI of −0.12 (ask-heavy at L0–L3) while the deep book is +0.04 (mildly bid-heavy at L5–L9). Low-Z₂ bars reverse this: near-book +0.08, deep book −0.07. The two halves of the book are pulling in opposite directions.
 
 These patterns emerge purely from the geometry of the data — ISOMAP was not told about depth levels, bid/ask directions, or economic intuition.
+
+The axis profiles also preview the stress result in Section 8: when every update within a minute points the same direction, the book collapses toward the high-Z₁ or low-Z₁ region and the within-minute variance drops. That second-moment collapse is what makes stress detectable.
 """))
 
 # ── Section 6 ─────────────────────────────────────────────────────────────────
@@ -197,10 +198,10 @@ cells.append(md("""
 The ISOMAP is trained on the first 75% of October. The remaining 25% is held out and projected using the Nyström extension (`isomap.transform()`). A well-learned manifold should accommodate OOS bars inside the region covered by the training set.
 """))
 
-cells.append(code("display(Image('figures/4f_oos_projection.png'))"))
+cells.append(code("display(Image('figures/4g_NVDA_oos_projection.png'))"))
 
 cells.append(md("""
-OOS bars land inside the region covered by the training set. The learned manifold structure is stable over the hold-out period.
+OOS bars (Oct 24–31, colored by week) land inside the region covered by the training cloud (gray). The learned manifold structure is stable over the hold-out period — successive weeks do not drift to new regions.
 
 Does the 2D representation contain any short-horizon return signal?
 """))
