@@ -2,7 +2,7 @@
 
 Limit Order Book Feature Engineering Series
 
-Start date: February 25, 2026 | Today: May 3, 2026 | Total: **10 weeks**
+Start date: February 25, 2026 | Today: May 6, 2026 | Total: **11 weeks**
 
 ---
 
@@ -142,10 +142,59 @@ Start date: February 25, 2026 | Today: May 3, 2026 | Total: **10 weeks**
 
 **Key finding:** The LOB manifold is approximately universal across large-cap Nasdaq names in the same market window. Stock identity is a second-order effect; intraday time-of-day regimes dominate.
 
-### Next milestone
+### Part 4i — Stress Period Projection: BOJ Shock Week on the Calm Manifold
 
-- Part 4i — project Aug 2024 BOJ shock week onto the calm manifold (unsupervised regime detection)
+- Downloaded NVDA mbp-10 data for Aug 5–9, 2024 (BOJ shock week, 31.6M rows)
+- Built `run_4i_stress_projection.py` comparing two feature representations:
+  - **Model A (10 features — OBI means only):** stress bars land inside calm cloud; only 3.6% outside calm 95th percentile
+  - **Model B (20 features — OBI means + within-minute OBI std):** 16.8% outside 95th; stress mean distance = 2× calm mean
+- Key insight: 1-minute mean OBI washes out directional crashes (every update within the minute points the same way → mean is moderate). The within-minute standard deviation is the stress signal — lower during a directional move, not higher.
+- Additional findings: book depth 11× higher during stress (includes 10:1 June 2024 split); manifold path length 0.1–1.4 SD shorter than calm (book locked into fewer states despite larger price moves)
+- Built `DS4FE_Part4i_Stress_Projection.ipynb` with 6 figures including Aug 5 minute-by-minute trajectory and manifold distance through the week
 
-**Deliverables:** Parts 4f, 4g, 4h notebooks and all scripts committed; figures in `figures/`.
+**Key finding:** Mean OBI alone is insufficient to detect regime stress. Adding the second moment (within-minute OBI std) makes the structural abnormality detectable — 4× more stress bars flagged — without labels, price data, or model retraining.
+
+**Deliverables:** Parts 4f, 4g, 4h, 4i notebooks and all scripts committed; figures in `figures/`.
+
+---
+
+## Week 11 (May 5–11, 2026)
+
+**Standalone demo notebook polished based on detailed external review. Meeting preparation.**
+
+### DS4FE_ISOMAP_Demo.ipynb — Full rebuild
+
+Received a cell-by-cell critique of the demo notebook and implemented all corrections:
+
+**Structural changes (56 cells → 42 cells, 8 sections):**
+- Rebuilt notebook from scratch using `build_demo_notebook.py` for reproducibility
+- Replaced mislabeled `4f_isomap_vs_pca.png` (it showed OBI₀ coloring, not a PCA comparison) with `4g_NVDA_scree.png` (full October data)
+- Trimmed per-symbol deep dive (15 figures) to summary table + joint embedding + joint depth profile
+- Added Part 4i stress projection as Section 8 (3 figures: model comparison, Aug 5 path, manifold distance through week)
+
+**12 factual and framing fixes:**
+
+| Fix | Detail |
+|-----|--------|
+| Raw data scale | Removed "50M ticks/day" headline; states "8,580 bars after aggregation" |
+| Snapshot description | "Noisy and uneven — that's why we aggregate" instead of "balanced" |
+| k inconsistency | Explicitly states k=15 per-symbol, k=30 for joint/stress; resolves figure label mismatch |
+| "97% fidelity" language | Reframed as geometry-fidelity measure; note it is not directly comparable to PCA explained variance |
+| Z₂ sign | Fixed to match depth-profile figure: negative near top-of-book, positive deeper; sign arbitrariness noted |
+| Time-of-day regime claim | "Shared book-state space" rather than "time of day is stronger than stock identity" |
+| OOS IC overclaim | p≈0.20; "main contribution is state representation, not standalone prediction" |
+| Joint embedding | Weakened unsupported "stronger organizing dimension" claim |
+| BOJ chronology | Rate hike July 31 (effective Aug 1); selloff Aug 5 — not conflated |
+| Stress-distance contradiction | "Shifts upward, more extreme tail" — not "persistently above 95th" (only 16.8% exceed it) |
+| Conclusion | Rewritten around state representation + regime detection; no return-prediction overclaim |
+| Narrative order | Section 2 reordered: snapshot → heatmap → correlation → ISOMAP motivation |
+
+### New figure: neighbor sensitivity
+
+- Generated `4g_NVDA_neighbor_sensitivity.png`: ISOMAP 2D fidelity for k = 5, 10, 15, 20, 30, 50
+- Result: (1 − residual) stays 0.951–0.980 across the full range — the 2D structure is stable and not sensitive to the choice of k
+- Directly answers the expected question: "How sensitive is this to n_neighbors?"
+
+**Deliverables:** `DS4FE_ISOMAP_Demo.ipynb` (42 cells, 18 embedded figures), `build_demo_notebook.py`, `gen_neighbor_sensitivity.py` — all committed and pushed.
 
 ---
