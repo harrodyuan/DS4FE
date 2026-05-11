@@ -2,7 +2,7 @@
 
 Limit Order Book Feature Engineering Series
 
-Start date: February 25, 2026 | Today: May 6, 2026 | Total: **11 weeks**
+Start date: February 25, 2026 | Today: May 11, 2026 | Total: **12 weeks**
 
 ---
 
@@ -196,5 +196,48 @@ Received a cell-by-cell critique of the demo notebook and implemented all correc
 - Directly answers the expected question: "How sensitive is this to n_neighbors?"
 
 **Deliverables:** `DS4FE_ISOMAP_Demo.ipynb` (42 cells, 18 embedded figures), `build_demo_notebook.py`, `gen_neighbor_sensitivity.py` — all committed and pushed.
+
+---
+
+## Week 12 (May 11, 2026)
+
+**Pre-meeting: ISOMAP vs PCA cross-over test reveals ISOMAP does not significantly outperform PCA.**
+
+### Cross-over verification (DS4FE_ISOMAP_crossover_verification.ipynb)
+
+Identified a methodological flaw in earlier notebooks: the scree plot compared ISOMAP's geodesic reconstruction error against PCA's cumulative Euclidean variance — two different loss functions — creating a false impression that "ISOMAP needs 2D while PCA needs 7D."
+
+Correct cross-over test (both methods, same metric, k = 1…10, NVDA Oct 2023):
+
+| k | PCA R² | ISOMAP R² | PCA geo ρ | ISOMAP geo ρ |
+|---|--------|-----------|-----------|--------------|
+| 2 | 0.769 | 0.761 | 0.944 | 0.950 |
+| 7 | 0.960 | 0.876 | 0.970 | 0.979 |
+
+- At k=2, PCA and ISOMAP tied on Euclidean variance (~77% each)
+- ISOMAP geo ρ consistently ~0.007 higher — real but small advantage
+- ISOMAP R² plateaus at ~0.876 because it optimises geodesic structure, not Euclidean variance
+
+**Key finding: ISOMAP does not meaningfully outperform PCA on this dataset. The OBI manifold is mildly curved; PCA's flat approximation captures the dominant structure equally well at 2D.**
+
+### Stress detection comparison (DS4FE_ISOMAP_stress_comparison.ipynb)
+
+Tested PCA vs ISOMAP vs UMAP for separating Aug 2024 BOJ shock data from Oct 2023 calm manifold (KS test, Cohen's d, % above 95th percentile):
+
+| Method | KS stat | % flagged | Cohen's d |
+|--------|---------|-----------|-----------|
+| PCA    | 0.026 n.s. | 6.3% | +0.034 |
+| ISOMAP | 0.022 n.s. | 5.7% | +0.010 |
+| UMAP   | 0.048 *    | 6.7% | +0.071 |
+
+All three weak — consistent with Part 4i: adding within-minute OBI std is the key feature engineering step, not the DR method choice.
+
+**Key finding: ISOMAP does not outperform PCA for stress detection. Method choice is secondary to feature engineering.**
+
+### New files added
+
+- `DS4FE_LOB_ISOMAP_v2.ipynb` — consolidated ISOMAP notebook (NVDA+AAPL+MSFT, full Oct 2023)
+- `DS4FE_ISOMAP_crossover_verification.ipynb` — cross-over test
+- `DS4FE_ISOMAP_stress_comparison.ipynb` — PCA vs ISOMAP vs UMAP stress detection
 
 ---
