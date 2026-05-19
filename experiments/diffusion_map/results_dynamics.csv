@@ -1,0 +1,4 @@
+method,r2_predict_next_obi
+ISOMAP (k=2),0.1280607581021903
+PCA (k=2),0.12747113961558443
+"Diffusion Map (k=2, ε=median)",0.10437955739415172

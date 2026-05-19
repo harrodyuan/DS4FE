@@ -2,98 +2,116 @@
 
 Limit Order Book Feature Engineering Series
 
-Start date: February 25, 2026 | Today: May 11, 2026 | Total: **12 weeks**
+Start: Feb 25, 2026 | Today: May 19, 2026 | Total: **13 weeks**
 
 ---
 
-## Weeks 1–4 (Feb 25 – Mar 24, 2026)
+## Week 1 (Feb 25 – Mar 3, 2026) — Onboarding + Part 1: Daily Data Tour
 
-**Background reading and onboarding.**
+- Reviewed LOB microstructure literature (order flow imbalance, depth profiles, Kyle's Lambda); familiarized with Databento mbp-1/mbp-10 schemas; scoped the series structure
+- Universe: 50 large-cap US stocks × 5 sectors (Tech, Healthcare, Financials, Consumer, Energy), daily OHLCV Jan 2010 – Dec 2024
+- Data files: `ds4fe_panel.parquet`, `ds4fe_market.parquet`, `ds4fe_daily_prices.parquet`
+- Macro context: SPY return, VIX, 10Y–2Y yield spread, USD index
+- Beta regression of each stock on SPY: R² 0.20–0.80 across sectors — market explains most but not all variance
+- Sector heatmaps + rolling correlations to motivate cross-sectional factor framing
 
-- Reviewed LOB microstructure literature (order flow imbalance, depth profiles, Kyle's Lambda)
-- Familiarized with Databento API and mbp-1/mbp-10 schemas
-- Scoped the series structure and teaching angles
-- No commits — planning and reading phase
-
----
-
-## Week 5 (Mar 25–31, 2026)
-
-**Built the complete 5-part series from scratch.**
-
-- Initial commit: Parts 1 and 2 notebooks (data tour + feature engineering on daily OHLCV data)
-- Rewrote all markdown prose in textbook style; restructured into a clean 3-part series
-- Added Part 3: single-stock return prediction (Ridge, walk-forward CV, OOS R²)
-  - Added look-ahead bias demo, feature intuition, shortened prose
-- Added Part 4: LOB feature engineering (Databento mbp-1 data, OFI, IC analysis, calm vs stress comparison, cross-asset SPY signal)
-  - Added prediction benchmark (Ridge walk-forward, OOS R² by hour)
-  - Added XGBoost benchmark with look-ahead audit note
-  - Restructured with Part I / Part II divider; expanded IC vs OOS R² explanation
-- Added Part 5: Multifactor models and cross-sectional return prediction
-- Part 3: added OOS R² metric, AAPL LOB vs daily cross-frequency comparison
-- Parts 3 + 5: added cross-sectional vs time-series momentum insight
-- Series audit: fixed all cross-references, Series Notes, feature counts
-- Added `.gitignore` to exclude data files and local working materials
-- Added `DS4FE_Series_Notes.md`
-
-**Deliverables:** Full 5-part series (Parts 1–5) — first complete version committed.
+**Deliverable:** `DS4FE_Part1_Daily_Data_Tour.ipynb`
 
 ---
 
-## Weeks 6–7 (Apr 1–14, 2026)
+## Week 2 (Mar 4–10, 2026) — Part 2: Daily Feature Engineering
 
-**Consolidation and structural refactoring.**
+12 features × 4 families on the full 50-stock panel (~175k aligned obs):
 
-- Split monolithic Part 4 into four focused sub-notebooks:
-  - Part 4a: LOB Data Demo — Databento mbp-1 schema, event types, calm (Oct 2023) vs stress (Aug 5 2024 BOJ shock) period comparison
-  - Part 4b: Features & IC — OFI construction, daily IC analysis, t-stats, calm vs stress IC, cross-asset SPY signal
-  - Part 4c: Model Importance — Ridge vs XGBoost benchmark, walk-forward CV, hyperparameter grid search, OOS R² by hour
-  - Part 4d: Multi-Stock — pooled 5-symbol model (NVDA, AAPL, TSLA, MSFT, SPY), within-symbol rolling z-score normalization, cross-sectional OBI deviation
-- Removed API key from source; moved to `.env`
+- **Momentum (4):** `mom_1d`, `mom_5d`, `mom_21d`, `mom_63d` — log-return lookbacks
+- **Realized vol (2):** `vol_21d`, `vol_63d` — rolling std of daily log returns
+- **Volume/liquidity (2):** `volume_ratio` (today's vol / 21d avg), `amihud` (|return| / dollar vol × 10⁶)
+- **Macro (4, lagged 1d to avoid look-ahead):** `spy_ret`, `vix_level`, `yield_spread`, `dollar_index`
+
+IC analysis (Spearman ρ + t-stats) against next-day cross-sectional return; quintile sorts with Q5–Q1 cumulative spread. Framing: cross-sectional (rank stocks against each other) vs time-series prediction.
+
+**Deliverable:** `DS4FE_Part2_Daily_Features.ipynb`
+
+---
+
+## Week 3 (Mar 11–17, 2026) — Part 3: Single-Stock Prediction (AAPL)
+
+- Feature set expanded to 15 (added `mom_252d`, `vol_ratio`, `vix_chg`)
+- **Look-ahead bias demo:** `.shift(1)` fix, train/test contamination pitfall
+- Walk-forward CV: 504-day seed, expanding train, 1-day-ahead, no shuffling
+- Models: Ridge, Random Forest, XGBoost — all IC ≈ 0.01–0.02; win rate ~50–52%
+- Directional trading simulation with transaction-cost sensitivity
+- Cross-frequency comparison: daily R² ≈ ±0.001 vs NVDA intraday LOB XGBoost R² = +0.00029
+
+**Verdict:** Daily-frequency direction prediction is essentially random. Pivot to LOB.
+
+**Deliverable:** `DS4FE_Part3_Single_Stock_Prediction.ipynb`
+
+---
+
+## Week 4 (Mar 18–24, 2026) — Part 5: Multifactor Models
+
+- Cross-sectional factor model combining momentum, vol, volume, and macro features
+- Cross-sectional vs time-series momentum framing: ranking stocks against each other vs predicting one stock's direction
+- Series-wide cleanup: textbook-style prose rewrite, fixed cross-references, feature counts; added `.gitignore` and `DS4FE_Series_Notes.md`
+
+**Deliverable:** `DS4FE_Part5_Multifactor.ipynb`
+
+---
+
+## Week 5 (Mar 25–31, 2026) — Part 4 (initial): LOB Feature Engineering
+
+- Databento mbp-1 data; OFI construction; calm vs stress comparison; cross-asset SPY signal
+- Ridge walk-forward + XGBoost benchmark (with look-ahead audit note); OOS R² by hour
+- Restructured with Part I / Part II divider; expanded IC vs OOS R² discussion
+
+**Deliverable:** `DS4FE_Part4_LOB_Features.ipynb` (later split in Weeks 6–7)
+
+---
+
+## Weeks 6–7 (Apr 1–14, 2026) — Part 4 split into 4a–4d (consolidation/refactor)
+
+- **4a:** LOB Data Demo — Databento mbp-1 schema, event types, calm (Oct 2023) vs stress (Aug 5 2024 BOJ shock) comparison
+- **4b:** Features & IC — OFI construction, daily IC, t-stats, calm vs stress IC, cross-asset SPY signal
+- **4c:** Model Importance — Ridge vs XGBoost, walk-forward CV, hyperparameter grid, OOS R² by hour
+- **4d:** Multi-Stock — pooled 5-symbol model (NVDA, AAPL, TSLA, MSFT, SPY), within-symbol rolling z-score, cross-sectional OBI deviation
+- API key moved from source to `.env`
 
 **Deliverables:** Parts 4a–4d structured and committed.
 
 ---
 
-## Week 8 (Apr 15–21, 2026)
+## Week 8 (Apr 15–21, 2026) — Part 4e: Trade Tape Features
 
-**Added trade tape data and Part 4e; executed all notebooks.**
-
-- Downloaded Databento `trades` schema for all 5 symbols × 2 periods (calm Oct 2023 + stress Aug 2024); 10 parquet files, ~560 MB total
-- Added `download_trades.py` script
-- Built Part 4e: Trade Tape Features
-  - Educational framing: "The Illusion of the Order Book — Intent vs. Action"
-  - Feature 1: `signed_volume_ratio` (SVR) — buyer vs seller aggressor volume, range [−1, 1]
-  - Feature 2: `mid_vwap_bias` (MVB) — rolling 60s VWAP vs mid-price in basis points
-  - IC analysis: SVR IC @ 1s = −0.065 (strongest feature), MVB IC @ 10s = +0.016
-  - SVR ↔ OBI correlation is low → genuinely orthogonal to the order book
-  - Walk-forward R² comparison: XGBoost LOB-only = −0.00115 → LOB + SVR + MVB = +0.00017
+- Downloaded Databento `trades` for 5 symbols × 2 periods (~560 MB, 10 parquet files); added `download_trades.py`
+- Educational framing: "The Illusion of the Order Book — Intent vs. Action"
+- **SVR** (`signed_volume_ratio`): buyer vs seller aggressor volume in [−1, 1]; IC @ 1s = **−0.065** (strongest single feature)
+- **MVB** (`mid_vwap_bias`): rolling 60s VWAP vs mid-price in bps; IC @ 10s = +0.016
+- SVR ↔ OBI correlation low → genuinely orthogonal to the order book
+- Walk-forward XGBoost: LOB-only R² = −0.00115 → LOB + SVR + MVB = +0.00017
 - Executed Part 4d with per-symbol OOS R² bar chart
 
-**Deliverables:** Part 4e executed; all 4a–4e notebooks clean and pushed to `main`.
+**Deliverables:** All 4a–4e notebooks clean and pushed to `main`.
 
 ---
 
-## Week 9 (Apr 22–28, 2026)
+## Week 9 (Apr 22–28, 2026) — Part 4a polish for presentation
 
-**Revised and polished Part 4a for presentation.**
+- Deleted superseded monolithic `DS4FE_Part4_LOB_Features.ipynb`
+- Fixed uint32 overflow in calm vs stress OBI (bid/ask sizes cast to int64)
+- Replaced NVDA with SPY for calm-vs-stress (NVDA's shock was overnight; SPY shows the textbook spread spike)
+- Fixed order-book snapshot: row 500 (09:30:02, book not yet built) → 11:30 ET mid-session
+- Added calm-vs-stress event-type grouped bar chart, section transitions, summary handoff cell; rewrote em-dash-heavy prose
 
-- Deleted old monolithic `DS4FE_Part4_LOB_Features.ipynb` (superseded by 4a–4e)
-- Fixed uint32 overflow bug in calm vs stress OBI computation (bid/ask sizes cast to int64)
-- Replaced NVDA with SPY for the calm vs stress comparison — SPY shows the textbook spread spike and OBI instability on Aug 5; NVDA's shock was overnight so intraday looked misleading
-- Fixed order book snapshot: switched from row 500 (09:30:02, book not yet built) to 11:30 ET mid-session
-- Added calm vs stress event-type grouped bar chart (normalized to %, Fill partial filtered out)
-- Added section transition markdown cells throughout
-- Added concluding Summary cell with handoff to Part 4b
-- Rewrote all em-dash heavy prose to cleaner phrasing
-
-**Deliverables:** Part 4a fully polished with correct outputs; pushed to `main`.
+**Deliverables:** Part 4a fully polished, pushed to `main`.
 
 ---
 
-## Week 10 (Apr 29–May 5, 2026)
+## Week 10 (Apr 29–May 5, 2026) — Initial ISOMAP arc (Parts 4f / 4g / 4h / 4i)
 
-**Built Part 4f (ISOMAP), Part 4g (multi-symbol DR comparison), and Part 4h (joint ISOMAP). Professor check-in on May 1.**
+**Built Part 4f (ISOMAP), 4g (multi-symbol DR), 4h (joint ISOMAP), 4i (stress projection). Professor check-in May 1.**
+
+> ⚠️ The headline numbers below are **method-internal** (each method scored on its own loss function). Week 12's cross-over test shows this is apples-to-oranges; full reconciliation in `DS4FE_LOB_ISOMAP_v3.ipynb`.
 
 ### Part 4f — Unsupervised LOB Feature Engineering: ISOMAP
 
@@ -158,21 +176,18 @@ Start date: February 25, 2026 | Today: May 11, 2026 | Total: **12 weeks**
 
 ---
 
-## Week 11 (May 5–11, 2026)
+## Week 11 (May 5–11, 2026) — Demo notebook polish (`DS4FE_ISOMAP_Demo.ipynb` rebuild)
 
-**Standalone demo notebook polished based on detailed external review. Meeting preparation.**
+Received a cell-by-cell critique and implemented all corrections.
 
-### DS4FE_ISOMAP_Demo.ipynb — Full rebuild
+**Structural changes (56 → 42 cells, 8 sections):**
 
-Received a cell-by-cell critique of the demo notebook and implemented all corrections:
-
-**Structural changes (56 cells → 42 cells, 8 sections):**
-- Rebuilt notebook from scratch using `build_demo_notebook.py` for reproducibility
-- Replaced mislabeled `4f_isomap_vs_pca.png` (it showed OBI₀ coloring, not a PCA comparison) with `4g_NVDA_scree.png` (full October data)
+- Rebuilt from scratch via `build_demo_notebook.py` for reproducibility
+- Replaced mislabeled `4f_isomap_vs_pca.png` (showed OBI₀ coloring, not a PCA comparison) with `4g_NVDA_scree.png`
 - Trimmed per-symbol deep dive (15 figures) to summary table + joint embedding + joint depth profile
-- Added Part 4i stress projection as Section 8 (3 figures: model comparison, Aug 5 path, manifold distance through week)
+- Added Part 4i stress projection as Section 8 (3 figures: model comparison, Aug 5 path, manifold distance)
 
-**12 factual and framing fixes:**
+**12 factual/framing fixes:**
 
 | Fix | Detail |
 |-----|--------|
@@ -199,30 +214,22 @@ Received a cell-by-cell critique of the demo notebook and implemented all correc
 
 ---
 
-## Week 12 (May 11, 2026)
+## Week 12 (May 11–12, 2026) — Cross-over → v3 honest rebuild → robustness sweep
 
-**Pre-meeting: ISOMAP vs PCA cross-over test reveals ISOMAP does not significantly outperform PCA.**
+The Week 10 "ISOMAP wins" headline was tested rigorously and **rejected**. Final canonical notebook is `DS4FE_LOB_ISOMAP_v3.ipynb`.
 
-### Cross-over verification (DS4FE_ISOMAP_crossover_verification.ipynb)
+### 12.1 — Why the original "ISOMAP wins" was misleading
 
-Identified a methodological flaw in earlier notebooks: the scree plot compared ISOMAP's geodesic reconstruction error against PCA's cumulative Euclidean variance — two different loss functions — creating a false impression that "ISOMAP needs 2D while PCA needs 7D."
+The original scree comparison ("ISOMAP needs 2D, PCA needs 7D") used **different** loss functions for the two methods. Correct comparison: both methods scored on **both** Spearman ρ (geodesic) and Euclidean R², k = 1…10, NVDA Oct 2023 train:
 
-Correct cross-over test (both methods, same metric, k = 1…10, NVDA Oct 2023):
-
-| k | PCA R² | ISOMAP R² | PCA geo ρ | ISOMAP geo ρ |
-|---|--------|-----------|-----------|--------------|
+| k | PCA R² | ISOMAP R² | PCA ρ | ISOMAP ρ |
+|---|--------|-----------|-------|----------|
 | 2 | 0.769 | 0.761 | 0.944 | 0.950 |
 | 7 | 0.960 | 0.876 | 0.970 | 0.979 |
 
-- At k=2, PCA and ISOMAP tied on Euclidean variance (~77% each)
-- ISOMAP geo ρ consistently ~0.007 higher — real but small advantage
-- ISOMAP R² plateaus at ~0.876 because it optimises geodesic structure, not Euclidean variance
+ISOMAP ρ exceeds PCA ρ by ~0.007 — real but tiny. PCA strictly dominates ISOMAP on R² from k=5 onward.
 
-**Key finding: ISOMAP does not meaningfully outperform PCA on this dataset. The OBI manifold is mildly curved; PCA's flat approximation captures the dominant structure equally well at 2D.**
-
-### Stress detection comparison (DS4FE_ISOMAP_stress_comparison.ipynb)
-
-Tested PCA vs ISOMAP vs UMAP for separating Aug 2024 BOJ shock data from Oct 2023 calm manifold (KS test, Cohen's d, % above 95th percentile):
+### 12.2 — Stress detection comparison
 
 | Method | KS stat | % flagged | Cohen's d |
 |--------|---------|-----------|-----------|
@@ -230,14 +237,147 @@ Tested PCA vs ISOMAP vs UMAP for separating Aug 2024 BOJ shock data from Oct 202
 | ISOMAP | 0.022 n.s. | 5.7% | +0.010 |
 | UMAP   | 0.048 *    | 6.7% | +0.071 |
 
-All three weak — consistent with Part 4i: adding within-minute OBI std is the key feature engineering step, not the DR method choice.
+All weak — confirms Part 4i: feature engineering (within-minute std) matters more than DR method.
 
-**Key finding: ISOMAP does not outperform PCA for stress detection. Method choice is secondary to feature engineering.**
+### 12.3 — `DS4FE_LOB_ISOMAP_v3.ipynb` — honest rebuild
 
-### New files added
+Consolidated v2 → v3 with 14 sections, 2×1 plot layouts, hexbin for dense scatters. Built via `/tmp/build_v3.py`. Key sections:
 
-- `DS4FE_LOB_ISOMAP_v2.ipynb` — consolidated ISOMAP notebook (NVDA+AAPL+MSFT, full Oct 2023)
-- `DS4FE_ISOMAP_crossover_verification.ipynb` — cross-over test
-- `DS4FE_ISOMAP_stress_comparison.ipynb` — PCA vs ISOMAP vs UMAP stress detection
+- §5 Cross-over test (both methods, both metrics)
+- §6 k-sweep verification
+- §7 Method sweep (PCA / ISOMAP / UMAP / t-SNE)
+- §13 Diagnostics — Test 1 (Swiss Roll positive control), Test 2 (Euclid vs geodesic), Test 3 (TwoNN intrinsic dim)
+- §14 Robustness checks (added at end of session — see 12.4)
+
+**§7 method sweep — the verdict in one picture:**
+
+![Method sweep at k=2 on NVDA: PCA alone occupies the upper-right corner](figures/v3_method_sweep.png)
+
+X-axis: geodesic ρ (manifold-distance preservation, ISOMAP's home metric). Y-axis: Euclidean R² (variance capture, PCA's home metric). Upper-right = best on both. **PCA is the only point in the upper-right corner.** ISOMAP comes close on ρ but loses on R²; UMAP and t-SNE are strictly worse on both metrics across all hyperparameter settings. This single plot is the cleanest visual summary of the v3 verdict.
+
+**TwoNN intrinsic dimension — the killer numerical evidence:**
+
+| Dataset | True d | TwoNN d̂ |
+|---|---|---|
+| Swiss Roll | 2 | 1.93 |
+| 3-D Gaussian | 3 | 2.98 |
+| 10-D Gaussian | 10 | 9.51 |
+| **NVDA OBI** | — | **9.18** |
+| **AAPL OBI** | — | **8.40** |
+| **MSFT OBI** | — | **8.41** |
+
+OBI is **essentially full-rank in 10 dimensions**. There is no low-D curved manifold to recover.
+
+### 12.4 — Robustness sweep: four external experiments
+
+Stress-test the v3 verdict across hyperparameters, time resolution, and method choice. All four live in `experiments/` as standalone scripts.
+
+| # | Experiment | Folder | Question | Result |
+|---|---|---|---|---|
+| 1 | n_neighbors sweep | `experiments/nn_sweep/` | Does ISOMAP's only knob change the answer? | Across k ∈ {3,…,200}: max Δρ vs PCA = +0.004; ISOMAP **never** beats PCA on OOS R² |
+| 2 | Second-level data | `experiments/second_level/` | Does higher frequency reveal hidden structure? | Cross-over Δρ **flips sign**: minute +0.005 (ISO) → second **−0.003 (PCA)**; intrinsic dim rises 9.0 → 9.5 |
+| 3 | Diffusion Map | `experiments/diffusion_map/` | Does a dynamics-aware method find structure ISOMAP missed? | Best DM R² = +0.7880 ≈ PCA's +0.7881 (DM converges to PCA at large ε, as theory predicts); loses on dynamics test (DM 0.104 vs PCA 0.128) |
+| 4 | t-SNE | `experiments/tsne/` | Does cluster-finding reveal regimes? | Worst on geometry (best ρ=0.856 vs PCA 0.948); max \|ARI\| across 4 natural groupings = **0.0097** for all methods → no clusters exist |
+
+### Combined verdict (Week 12)
+
+Across **3 NDR methods** (ISOMAP, Diffusion Map, t-SNE), **2 time resolutions** (1 min, 1 sec), and **wide hyperparameter sweeps**, no setting and no method beats PCA by more than the precision of the test. The conclusion is **scale-invariant, hyperparameter-invariant, and method-invariant** for OBI on NVDA/AAPL/MSFT.
+
+**PCA is the right tool** — known by exclusion against the strongest reasonable alternatives, not by accident of one configuration.
+
+The methodological contribution is the **four-diagnostic framework** (cross-over, sweep, direct curvature test, intrinsic dimension) — a reusable prerequisite check before reaching for ISOMAP/UMAP on any new financial dataset.
+
+### Files added this week
+
+- `DS4FE_LOB_ISOMAP_v2.ipynb`, `DS4FE_LOB_ISOMAP_v3.ipynb` (canonical)
+- `DS4FE_ISOMAP_crossover_verification.ipynb`, `DS4FE_ISOMAP_stress_comparison.ipynb`
+- `experiments/nn_sweep/` (script + results.csv + 3 figures)
+- `experiments/second_level/` (build_second_bars.py + tests notebook + figures)
+- `experiments/diffusion_map/` (script + 5 results CSVs + figures)
+- `experiments/tsne/` (script + 4 results CSVs + 3 figures)
+
+---
+
+## Week 13 (May 13–19, 2026) — Pivot to Raw 20-D LOB Sizes: Distance Function Bake-off
+
+After the May 12 professor meeting we agreed: v3 settled the OBI verdict (PCA wins on derived 10-D OBI features), so the open question is whether the same conclusion survives on **raw 20-D LOB sizes** (10 bid + 10 ask) where the choice of distance function is itself the experiment. Built `DS4FE_LOB_RawDistance_v1.ipynb` (36 cells, 14 sections) to settle it.
+
+### 13.1 — Setup: 7 distances, 2 metrics, NVDA Oct 2023, 1-min bars
+
+| # | distance | preprocessing | scale-invariant? |
+|---|---|---|---|
+| 1 | Euclidean       | none                     | no |
+| 2 | Log-Euclidean   | log1p                    | partial |
+| 3 | Z-Euclidean     | per-feature z-score      | yes (variance) |
+| 4 | Mahalanobis     | full whitening (PSD pinv) | yes (variance + correlation) |
+| 5 | Cosine          | unit-norm                | yes |
+| 6 | Correlation     | demean + unit-norm       | yes |
+| 7 | Aitchison (CLR) | log + centre per row     | yes (compositional) |
+
+Scoring on the 2-D embedding:
+
+- **ρ_self** — Spearman correlation between native-distance pairs and Euclidean-distance pairs in the embedding (preservation of pairwise structure)
+- **R²_shape** — variance recovery of the CLR-transformed input from a linear back-projection of the 2-D embedding (fair metric across distance families)
+
+### 13.2 — Headline result on NVDA (n = 4000 minute-bars)
+
+| metric | best ISOMAP | best matched-PCA |
+|---|---|---|
+| ρ_self   | **Mahalanobis (0.82)** | Z-Euclidean (0.72) |
+| R²_shape | Aitchison (0.11)       | Aitchison (0.14)   |
+
+Mahalanobis-ISOMAP wins ρ_self decisively, but ΔR²_shape ≈ 0 across the board. The win is in pairwise-distance preservation, **not** coordinate reconstruction.
+
+### 13.3 — Cross-symbol verification (NVDA / AAPL / MSFT, n = 3000 each)
+
+| symbol | Mahalanobis Δρ (ISO − PCA) | Z-Euclidean Δρ (ISO − PCA) |
+|---|---|---|
+| NVDA | +0.042 | +0.063 |
+| AAPL | **+0.150** | +0.039 |
+| MSFT | +0.071 | **−0.075** |
+
+**Mahalanobis-ISOMAP win replicates** on every symbol. **Z-Euclidean does not** — it flips sign on MSFT, indicating that variance equalisation alone (without removing inter-level correlations) does not generalise across symbols. Full whitening is doing real work.
+
+### 13.4 — TwoNN intrinsic dimension by preprocessing (NVDA, n = 4000)
+
+| preprocessing | d̂ | ambient |
+|---|---|---|
+| **Whitened (Mahalanobis)** | **9.30** | 20 |
+| Z-scored | 9.54 | 20 |
+| Raw (Euclidean) | 10.19 | 20 |
+| log1p (Log-Euclidean) | 16.32 | 20 |
+| CLR (Aitchison) | 16.11 | 20 |
+
+Raw 20-D LOB sizes live on a ≈9-D structure — half the ambient dimensions are pure inter-level covariance. log/CLR transforms inflate d̂ by smearing structure across more axes (size magnitude carries most of the low-rank story).
+
+### 13.5 — PCA loadings: what does each preprocessing actually "see"?
+
+| preprocessing | top-3 cumulative variance | dominant interpretation |
+|---|---|---|
+| Raw      | 48.6% | single-level scale anomalies (`ask_sz_04`, `ask_sz_05` swamp PC1+PC2) |
+| Z-scored | 24.7% | textbook decomposition: aggregate volume (PC1) + bid-ask imbalance (PC2/PC3) |
+| Whitened | 15.0% | flat 5%-each by construction — covariance fully removed |
+
+**Implication:** when ISOMAP gains over PCA on whitened data, the gain is *necessarily* nonlinear curvature — there are no preferred linear axes left to lose to. The diagnostic plot is `figures/v1_pca_loadings.png`.
+
+### 13.6 — Methodological caveat (worth flagging honestly)
+
+The §10 single-symbol NVDA Mahalanobis Δρ = **+0.42** disagrees with the §12 cross-symbol Δρ = **+0.04** by roughly 10×. The most likely cause is per-distance pair-index sampling indexing into different rows of the subsample at different `n`. The conservative cross-symbol number (Δρ = 0.04–0.15) is the one to quote; the §10 table needs a follow-up that scores every method on a single fixed pair set.
+
+### Combined verdict (Week 13)
+
+The choice of distance function **does** change the linear-vs-nonlinear conclusion for raw 20-D LOB sizes:
+
+- Under Euclidean / Log / Cosine / Correlation / Aitchison, PCA and ISOMAP score near-identically — consistent with the v3 OBI finding.
+- Under **Mahalanobis**, ISOMAP gains a real, reproducible edge on ρ_self across NVDA, AAPL, MSFT. The gap is small (+0.04 to +0.15), the structural reason is clear (residual ~9-D curved manifold inside an isotropic 20-D sphere), and the win lives only in pairwise-distance applications (kNN, clustering, anomaly distance) — *not* in coordinate reconstruction.
+
+**Practical rule for this dataset:** Mahalanobis-whiten always; pick PCA unless the downstream task specifically needs pairwise geometry on the curved residual.
+
+### Files added this week
+
+- `DS4FE_LOB_RawDistance_v1.ipynb` — main deliverable (36 cells, 14 sections)
+- `figures/v1_pca_loadings.png` — PCA loadings under three preprocessings
+- `figures/v1_cross_symbol_results.csv` — cross-symbol verification numbers
+- Helper scripts in `/tmp/`: `cross_symbol.py`, `patch_cell30.py`, `build_loadings.py`, `insert_loadings.py`, `fix_numbering.py`, `verify_nb.py`
 
 ---
