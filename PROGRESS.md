@@ -2,7 +2,9 @@
 
 Limit Order Book Feature Engineering Series
 
-Start: Feb 25, 2026 | Today: May 19, 2026 | Total: **13 weeks**
+Start: Feb 25, 2026 | Today: Jun 3, 2026 | Total: **15 weeks**
+
+**Working note.** This is a working progress log, not a final paper. I keep some earlier interpretations in place even when later experiments corrected them, because the goal is to show the research path: what was tried, what failed, and how the conclusion changed over time.
 
 ---
 
@@ -366,12 +368,12 @@ The §10 single-symbol NVDA Mahalanobis Δρ = **+0.42** disagrees with the §12
 
 ### Combined verdict (Week 13)
 
-The choice of distance function **does** change the linear-vs-nonlinear conclusion for raw 20-D LOB sizes:
+At this stage, the choice of distance function **appears to change** the linear-vs-nonlinear conclusion for raw 20-D LOB sizes:
 
 - Under Euclidean / Log / Cosine / Correlation / Aitchison, PCA and ISOMAP score near-identically — consistent with the v3 OBI finding.
-- Under **Mahalanobis**, ISOMAP gains a real, reproducible edge on ρ_self across NVDA, AAPL, MSFT. The gap is small (+0.04 to +0.15), the structural reason is clear (residual ~9-D curved manifold inside an isotropic 20-D sphere), and the win lives only in pairwise-distance applications (kNN, clustering, anomaly distance) — *not* in coordinate reconstruction.
+- Under **Mahalanobis**, ISOMAP appears to gain a small but reproducible edge on ρ_self across NVDA, AAPL, MSFT. The gap is modest (+0.04 to +0.15). My current interpretation is that whitening removes the dominant covariance structure and exposes a residual ~9-D curved shape; the win seems relevant mainly for pairwise-distance applications (kNN, clustering, anomaly distance), *not* for coordinate reconstruction.
 
-**Practical rule for this dataset:** Mahalanobis-whiten always; pick PCA unless the downstream task specifically needs pairwise geometry on the curved residual.
+**Working rule for this dataset:** Mahalanobis whitening currently looks like the most defensible preprocessing for raw size vectors; PCA remains the default unless the downstream task specifically needs pairwise geometry on the curved residual.
 
 ### Files added this week
 
@@ -379,5 +381,55 @@ The choice of distance function **does** change the linear-vs-nonlinear conclusi
 - `figures/v1_pca_loadings.png` — PCA loadings under three preprocessings
 - `figures/v1_cross_symbol_results.csv` — cross-symbol verification numbers
 - Helper scripts in `/tmp/`: `cross_symbol.py`, `patch_cell30.py`, `build_loadings.py`, `insert_loadings.py`, `fix_numbering.py`, `verify_nb.py`
+
+---
+
+## Week 14 (May 20–26, 2026) — RawDistance wrap-up: one-picture takeaway + verdict
+
+- Added a single takeaway figure to `DS4FE_LOB_RawDistance_v1.ipynb` (`figures/raw_dist_takeaway.svg`) summarising the whole notebook in three panels: PCA wins compression (R²_raw 0.40 vs 0.33), Mahalanobis-ISOMAP wins neighbor geometry (ρ_self 0.82 vs 0.40), PCA slightly wins book-shape (R²_shape 0.14 vs 0.11)
+- **Settled the framing:** raw 20-D LOB sizes do **not** strongly need nonlinear DR for feature compression — PCA remains the default. ISOMAP's only real edge is preserving Mahalanobis pairwise geometry (useful for kNN / clustering / anomaly distance), and the data is ~9–10-D, not a clean 2-D manifold
+- Conclusion to professor: distance choice (Mahalanobis whitening) matters more than the DR method; nonlinear DR is interesting but not the central contribution for this dataset
+
+**Deliverable:** takeaway figure + verdict added to RawDistance v1.
+
+---
+
+## Week 15 (May 27 – Jun 3, 2026) — Full pivot to SPX IV surfaces (a dataset where low-D structure is expected)
+
+After concluding the LOB family does not need nonlinear DR, pivoted to the **SPX implied-volatility surface** — a dataset where theory predicts genuine low-dimensional structure (level / skew / curvature) and no-arbitrage curvature, the natural home case for ISOMAP.
+
+### 15.1 — Data engineering (Databento OPRA)
+
+- Source: `OPRA.PILLAR`, parent `SPX.OPT`. Databento gives **prices only, not IV** → computed IV ourselves (SPX is European → clean Black-76 inversion; forward + rate per expiry via put-call parity)
+- Cost-controlled design: pulled only the **15:45-ET snapshot minute** (`cbbo-1m`) + daily `definition` → ~$0.017/day, ~$9 total for 2 years (verified by free `get_cost` estimates)
+- Validated the pipeline on 2023-06-01: forward curve 4222→4721, rates ~5–6%, ATM term structure 13.4%→19.6%, textbook SPX put skew
+- Parallel resumable pull (6 workers) → **523 daily surfaces, 2021-06 → 2023-06** (covers calm 2021, 2022 selloff, 2023 recovery); each day interpolated onto a fixed **7×9 (maturity × moneyness) grid**
+
+### 15.2 — Result: PCA vs ISOMAP on IV surfaces
+
+| metric | value |
+|---|---|
+| TwoNN intrinsic dimension | **3.76** (vs ~9–10 for raw LOB) |
+| PCA variance, 3 factors | **98.9%** (PC1 92.6% level, PC2 4.5% skew, PC3 1.8% curvature) |
+| PCA-2 ρ_self | **0.9983** |
+| ISOMAP-2 ρ_self | 0.9891 |
+
+The IV surface **is** genuinely low-dimensional (~3.8 ≈ the classic 3 factors), but the structure is **essentially linear** — PCA-2 already preserves 99.8% of pairwise geometry and ISOMAP does **not** beat it.
+
+### Combined verdict (Week 15) — unified story across both datasets
+
+> Nonlinear DR adds nothing for **either** dataset, for **opposite** reasons.
+> - **Raw LOB:** PCA wins because the data is high-D / noisy — no clean manifold (intrinsic ~9–10).
+> - **IV surface:** PCA wins because the manifold is low-D but **linear** — 3 linear factors capture ~99%, leaving no curvature for ISOMAP.
+
+When low-dimensional structure exists in these financial datasets, it is linear → **PCA is the right tool.**
+
+**Caveat to flag:** the surface builder uses linear interpolation in total-variance space, which can itself flatten mild curvature. A no-arbitrage-aware fit (e.g. SVI) before re-running ISOMAP is the natural robustness follow-up.
+
+### Files added this week
+
+- `DS4FE_IV_Surface_v1.ipynb` — main deliverable (executed, 16 cells) + `figures/iv_surface_takeaway.svg`
+- `experiments/iv_surface/` — `db_check.py` (free cost checks), `pull_one_day.py`, `iv_lib.py` (Black-76 + parity), `pull_multi_day.py` (parallel resumable pull), `build_surfaces.py`
+- `data/iv/` — 523 cached daily IV tables + `surfaces.parquet` (523×63) + `surface_grid.json`
 
 ---

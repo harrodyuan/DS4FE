@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#F7F9FB"/>
+
+  <text x="800" y="78" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#17202A">Raw 20-D LOB Sizes: PCA vs ISOMAP in One Picture</text>
+  <text x="800" y="122" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#566573">Distance choice matters. ISOMAP helps mainly for Mahalanobis pairwise geometry; PCA remains better for compression.</text>
+
+  <rect x="80" y="195" width="430" height="500" rx="24" fill="#FFFFFF" stroke="#D5DBDB" stroke-width="2"/>
+  <text x="115" y="255" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#17202A">1. Compress raw sizes</text>
+  <text x="115" y="294" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#566573">Metric: R²_raw</text>
+  <text x="115" y="327" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7B7D7D">How much of the original 20 size columns</text>
+  <text x="115" y="350" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7B7D7D">are recovered by the 2-D representation?</text>
+  <text x="115" y="430" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">PCA</text>
+  <rect x="215" y="407" width="224" height="38" rx="7" fill="#2E86C1" stroke="#1B4F72" stroke-width="1"/>
+  <text x="452" y="432" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#17202A">0.404</text>
+  <text x="115" y="497" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">ISOMAP</text>
+  <rect x="215" y="474" width="185" height="38" rx="7" fill="#95A5A6" stroke="#566573" stroke-width="1"/>
+  <text x="413" y="499" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#17202A">0.334</text>
+  <text x="295" y="586" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#2E86C1">PCA wins</text>
+  <text x="115" y="638" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#566573">Use this if you want low-dimensional</text>
+  <text x="115" y="663" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#566573">features or reconstruction.</text>
+
+  <rect x="585" y="195" width="430" height="500" rx="24" fill="#FFFFFF" stroke="#D5DBDB" stroke-width="2"/>
+  <text x="620" y="255" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#17202A">2. Preserve neighbor geometry</text>
+  <text x="620" y="294" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#566573">Metric: ρ_self on Mahalanobis distance</text>
+  <text x="620" y="327" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7B7D7D">Do nearby/far books stay nearby/far</text>
+  <text x="620" y="350" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7B7D7D">after embedding into 2-D?</text>
+  <text x="620" y="430" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">PCA</text>
+  <rect x="720" y="407" width="112" height="38" rx="7" fill="#95A5A6" stroke="#566573" stroke-width="1"/>
+  <text x="845" y="432" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#17202A">0.402</text>
+  <text x="620" y="497" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">ISOMAP</text>
+  <rect x="720" y="474" width="229" height="38" rx="7" fill="#8E44AD" stroke="#5B2C6F" stroke-width="1"/>
+  <text x="962" y="499" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#17202A">0.825</text>
+  <text x="800" y="586" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#8E44AD">ISOMAP wins</text>
+  <text x="620" y="638" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#566573">Cross-symbol Δρ stays positive:</text>
+  <text x="620" y="663" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#566573">NVDA +0.04, AAPL +0.15, MSFT +0.07.</text>
+
+  <rect x="1090" y="195" width="430" height="500" rx="24" fill="#FFFFFF" stroke="#D5DBDB" stroke-width="2"/>
+  <text x="1125" y="255" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#17202A">3. Compress book shape</text>
+  <text x="1125" y="294" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#566573">Metric: R²_shape on CLR shape</text>
+  <text x="1125" y="327" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7B7D7D">How much scale-free bid/ask shape</text>
+  <text x="1125" y="350" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#7B7D7D">is recovered by the 2-D representation?</text>
+  <text x="1125" y="430" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">PCA-CLR</text>
+  <rect x="1290" y="407" width="211" height="38" rx="7" fill="#2E86C1" stroke="#1B4F72" stroke-width="1"/>
+  <text x="1460" y="432" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#17202A">0.135</text>
+  <text x="1125" y="497" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">ISOMAP-A</text>
+  <rect x="1290" y="474" width="175" height="38" rx="7" fill="#95A5A6" stroke="#566573" stroke-width="1"/>
+  <text x="1478" y="499" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#17202A">0.112</text>
+  <text x="1305" y="586" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#2E86C1">PCA slightly wins</text>
+  <text x="1125" y="638" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#566573">Aitchison is useful conceptually,</text>
+  <text x="1125" y="663" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#566573">but not an ISOMAP win here.</text>
+
+  <rect x="160" y="750" width="1280" height="92" rx="24" fill="#EBF5FB" stroke="#AED6F1" stroke-width="2"/>
+  <text x="800" y="790" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#1B4F72">Practical takeaway</text>
+  <text x="800" y="826" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#154360">Feature compression → use PCA.  Distance-based liquidity states / neighbors → use Mahalanobis + ISOMAP.</text>
+
+  <text x="800" y="875" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#7B7D7D">Numbers from DS4FE_LOB_RawDistance_v1.ipynb: NVDA 1-min full sweep plus NVDA/AAPL/MSFT cross-symbol check.</text>
+</svg>

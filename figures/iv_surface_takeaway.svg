@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="940" viewBox="0 0 1600 940">
+  <rect width="1600" height="940" fill="#F7F9FB"/>
+
+  <text x="800" y="70" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#17202A">IV Surface vs Raw LOB: When Does Nonlinear DR Help?</text>
+  <text x="800" y="112" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#566573">Answer for both datasets: it doesn't. PCA wins everywhere — but for two opposite reasons.</text>
+
+  <!-- LEFT CARD: LOB -->
+  <rect x="80" y="160" width="680" height="520" rx="24" fill="#FFFFFF" stroke="#D5DBDB" stroke-width="2"/>
+  <text x="120" y="218" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" fill="#17202A">Raw 20-D LOB sizes</text>
+  <text x="120" y="252" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#7B7D7D">10 bid + 10 ask sizes per minute</text>
+
+  <text x="120" y="312" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#566573">Intrinsic dimension (TwoNN)</text>
+  <text x="120" y="352" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#C0392B">~9–10</text>
+  <text x="320" y="352" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#7B7D7D">high-dimensional, noisy</text>
+
+  <text x="120" y="416" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#566573">2-D geometry preserved (rho_self)</text>
+  <text x="120" y="452" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">PCA</text>
+  <rect x="240" y="432" width="160" height="30" rx="6" fill="#95A5A6"/>
+  <text x="412" y="453" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#17202A">0.40</text>
+  <text x="120" y="498" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">ISOMAP*</text>
+  <rect x="240" y="478" width="330" height="30" rx="6" fill="#8E44AD"/>
+  <text x="582" y="499" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#17202A">0.82</text>
+  <text x="120" y="536" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#7B7D7D">*only after Mahalanobis whitening; advantage modest across symbols</text>
+
+  <rect x="120" y="566" width="600" height="88" rx="14" fill="#FDEDEC" stroke="#F5B7B1" stroke-width="1.5"/>
+  <text x="140" y="600" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#922B21">Why PCA wins here:</text>
+  <text x="140" y="630" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#7B241C">No clean low-D manifold to exploit. Data is too</text>
+  <text x="140" y="640" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#7B241C"></text>
+  <text x="140" y="648" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#7B241C">high-dimensional and noisy for any 2-D method.</text>
+
+  <!-- RIGHT CARD: IV -->
+  <rect x="840" y="160" width="680" height="520" rx="24" fill="#FFFFFF" stroke="#D5DBDB" stroke-width="2"/>
+  <text x="880" y="218" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" fill="#17202A">SPX IV surface</text>
+  <text x="880" y="252" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#7B7D7D">523 daily surfaces, 7 mat x 9 moneyness</text>
+
+  <text x="880" y="312" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#566573">Intrinsic dimension (TwoNN)</text>
+  <text x="880" y="352" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#1E8449">~3.8</text>
+  <text x="1060" y="352" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#7B7D7D">low-D: level / skew / curvature</text>
+
+  <text x="880" y="416" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#566573">2-D geometry preserved (rho_self)</text>
+  <text x="880" y="452" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">PCA</text>
+  <rect x="1000" y="432" width="400" height="30" rx="6" fill="#2E86C1"/>
+  <text x="1412" y="453" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#17202A">0.998</text>
+  <text x="880" y="498" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#17202A">ISOMAP</text>
+  <rect x="1000" y="478" width="396" height="30" rx="6" fill="#95A5A6"/>
+  <text x="1408" y="499" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#17202A">0.989</text>
+  <text x="880" y="536" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#7B7D7D">3 PCA factors explain 98.9% of variance</text>
+
+  <rect x="880" y="566" width="600" height="88" rx="14" fill="#E9F7EF" stroke="#A9DFBF" stroke-width="1.5"/>
+  <text x="900" y="600" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#1E8449">Why PCA wins here:</text>
+  <text x="900" y="630" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#196F3D">The manifold is low-D but essentially LINEAR.</text>
+  <text x="900" y="648" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#196F3D">3 linear factors already capture ~99%.</text>
+
+  <!-- BOTTOM -->
+  <rect x="160" y="710" width="1280" height="170" rx="24" fill="#EBF5FB" stroke="#AED6F1" stroke-width="2"/>
+  <text x="800" y="752" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1B4F72">Unified takeaway</text>
+  <text x="800" y="792" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#154360">Nonlinear DR adds nothing for either dataset — for OPPOSITE reasons.</text>
+  <text x="800" y="826" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#154360">LOB: too high-dimensional / noisy (no manifold).    IV surface: low-dimensional but linear (no curvature to recover).</text>
+  <text x="800" y="858" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#1B4F72">When low-dimensional structure exists in these financial datasets, it is linear — so PCA is the right tool.</text>
+</svg>
