@@ -292,3 +292,134 @@ Traceback (most recent call last):
   File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/window/rolling.py", line 181, in _validate
     raise ValueError(
 ValueError: min_periods 2 must be <= window 1
+[sweep] resuming: 216 configs already complete
+[sweep] budget: 5.0h   smoke=False
+
+[phase A] bar=5s: loading features ...
+
+[phase A] bar=1s: loading features ...
+
+[phase A] bar=30s: loading features ...
+    building feat_NVDA_calm_30s.parquet ...
+  reading book  lob_mbp1_NVDA_calm_oct2023.parquet
+  reading trades trades_NVDA_calm_oct2023.parquet
+    building feat_NVDA_stress_30s.parquet ...
+  reading book  lob_mbp1_NVDA_stress_aug2024.parquet
+  reading trades trades_NVDA_stress_aug2024.parquet
+    building feat_AAPL_calm_30s.parquet ...
+  reading book  lob_mbp1_AAPL_calm_oct2023.parquet
+  reading trades trades_AAPL_calm_oct2023.parquet
+    building feat_AAPL_stress_30s.parquet ...
+  reading book  lob_mbp1_AAPL_stress_aug2024.parquet
+  reading trades trades_AAPL_stress_aug2024.parquet
+    building feat_MSFT_calm_30s.parquet ...
+  reading book  lob_mbp1_MSFT_calm_oct2023.parquet
+  reading trades trades_MSFT_calm_oct2023.parquet
+    building feat_MSFT_stress_30s.parquet ...
+  reading book  lob_mbp1_MSFT_stress_aug2024.parquet
+  reading trades trades_MSFT_stress_aug2024.parquet
+    building feat_SPY_calm_30s.parquet ...
+  reading book  lob_mbp1_SPY_calm_oct2023.parquet
+  reading trades trades_SPY_calm_oct2023.parquet
+    building feat_SPY_stress_30s.parquet ...
+  reading book  lob_mbp1_SPY_stress_aug2024.parquet
+  reading trades trades_SPY_stress_aug2024.parquet
+    building feat_TSLA_calm_30s.parquet ...
+  reading book  lob_mbp1_TSLA_calm_oct2023.parquet
+  reading trades trades_TSLA_calm_oct2023.parquet
+    building feat_TSLA_stress_30s.parquet ...
+  reading book  lob_mbp1_TSLA_stress_aug2024.parquet
+  reading trades trades_TSLA_stress_aug2024.parquet
+  [ 0.01h] A|30s|full|nc2|PCA                         ok (0.01s fit)
+  [ 0.01h] A|30s|full|nc2|KernelPCA_rbf               ok (0.22s fit)
+  [ 0.01h] A|30s|full|nc2|Isomap_nn10                 ok (1.63s fit)
+  [ 0.01h] A|30s|full|nc2|Isomap_nn30                 ok (2.71s fit)
+  [ 0.02h] A|30s|full|nc2|LLE                         ok (0.81s fit)
+Fatal Python error: init_sys_streams: can't initialize sys standard streams
+Python runtime state: core initialized
+OSError: [Errno 9] Bad file descriptor
+
+Current thread 0x00000001f7f6de80 (most recent call first):
+  <no Python frame>
+  [ 0.02h] A|30s|full|nc2|UMAP_nn15                   ok (22.02s fit)
+  [ 0.03h] A|30s|full|nc2|UMAP_nn50                   ok (18.44s fit)
+  [ 0.03h] A|30s|full|nc2|Diffusion_a1.0              ok (1.73s fit)
+  [ 0.03h] A|30s|full|nc2|Diffusion_a0.5              ok (1.62s fit)
+  [ 0.03h] A|30s|full|nc3|PCA                         ok (0.0s fit)
+  [ 0.03h] A|30s|full|nc3|KernelPCA_rbf               ok (0.19s fit)
+  [ 0.03h] A|30s|full|nc3|Isomap_nn10                 ok (1.46s fit)
+  [ 0.03h] A|30s|full|nc3|Isomap_nn30                 ok (2.33s fit)
+  [ 0.03h] A|30s|full|nc3|LLE                         ok (0.76s fit)
+  [ 0.03h] A|30s|full|nc3|UMAP_nn15                   ok (17.17s fit)
+  [ 0.04h] A|30s|full|nc3|UMAP_nn50                   ok (18.67s fit)
+  [ 0.04h] A|30s|full|nc3|Diffusion_a1.0              ok (1.63s fit)
+  [ 0.04h] A|30s|full|nc3|Diffusion_a0.5              ok (1.69s fit)
+  [ 0.04h] A|30s|full|nc5|PCA                         ok (0.0s fit)
+  [ 0.04h] A|30s|full|nc5|KernelPCA_rbf               ok (0.19s fit)
+  [ 0.04h] A|30s|full|nc5|Isomap_nn10                 ok (1.5s fit)
+  [ 0.04h] A|30s|full|nc5|Isomap_nn30                 ok (2.33s fit)
+  [ 0.04h] A|30s|full|nc5|LLE                         ok (0.78s fit)
+  [ 0.05h] A|30s|full|nc5|UMAP_nn15                   ok (17.57s fit)
+  [ 0.05h] A|30s|full|nc5|UMAP_nn50                   ok (19.45s fit)
+  [ 0.05h] A|30s|full|nc5|Diffusion_a1.0              ok (1.67s fit)
+  [ 0.05h] A|30s|full|nc5|Diffusion_a0.5              ok (1.7s fit)
+  [ 0.05h] A|30s|full|nc10|PCA                        ok (0.0s fit)
+  [ 0.06h] A|30s|full|nc10|KernelPCA_rbf              ok (1.05s fit)
+  [ 0.06h] A|30s|full|nc10|Isomap_nn10                ok (2.3s fit)
+  [ 0.06h] A|30s|full|nc10|Isomap_nn30                ok (3.19s fit)
+  [ 0.06h] A|30s|full|nc10|LLE                        ok (1.11s fit)
+  [ 0.06h] A|30s|full|nc10|UMAP_nn15                  ok (17.77s fit)
+  [ 0.07h] A|30s|full|nc10|UMAP_nn50                  ok (19.04s fit)
+  [ 0.07h] A|30s|full|nc10|Diffusion_a1.0             ok (1.67s fit)
+  [ 0.07h] A|30s|full|nc10|Diffusion_a0.5             ok (1.65s fit)
+  [ 0.07h] A|30s|state|nc2|PCA                        ok (0.0s fit)
+  [ 0.07h] A|30s|state|nc2|KernelPCA_rbf              ok (0.19s fit)
+  [ 0.07h] A|30s|state|nc2|Isomap_nn10                ok (1.44s fit)
+  [ 0.07h] A|30s|state|nc2|Isomap_nn30                ok (2.32s fit)
+  [ 0.07h] A|30s|state|nc2|LLE                        ok (0.43s fit)
+  [ 0.08h] A|30s|state|nc2|UMAP_nn15                  ok (16.95s fit)
+  [ 0.08h] A|30s|state|nc2|UMAP_nn50                  ok (18.33s fit)
+  [ 0.08h] A|30s|state|nc2|Diffusion_a1.0             ok (1.56s fit)
+  [ 0.08h] A|30s|state|nc2|Diffusion_a0.5             ok (1.54s fit)
+  [ 0.08h] A|30s|state|nc3|PCA                        ok (0.0s fit)
+  [ 0.08h] A|30s|state|nc3|KernelPCA_rbf              ok (0.19s fit)
+  [ 0.08h] A|30s|state|nc3|Isomap_nn10                ok (1.46s fit)
+  [ 0.08h] A|30s|state|nc3|Isomap_nn30                ok (2.43s fit)
+  [ 0.08h] A|30s|state|nc3|LLE                        ok (0.42s fit)
+  [ 0.09h] A|30s|state|nc3|UMAP_nn15                  ok (17.22s fit)
+  [ 0.09h] A|30s|state|nc3|UMAP_nn50                  ok (18.51s fit)
+  [ 0.09h] A|30s|state|nc3|Diffusion_a1.0             ok (1.6s fit)
+  [ 0.10h] A|30s|state|nc3|Diffusion_a0.5             ok (1.63s fit)
+  [ 0.10h] A|30s|state|nc5|PCA                        ok (0.0s fit)
+  [ 0.10h] A|30s|state|nc5|KernelPCA_rbf              ok (0.19s fit)
+  [ 0.10h] A|30s|state|nc5|Isomap_nn10                ok (1.43s fit)
+  [ 0.10h] A|30s|state|nc5|Isomap_nn30                ok (2.52s fit)
+  [ 0.10h] A|30s|state|nc5|LLE                        ok (0.42s fit)
+  [ 0.10h] A|30s|state|nc5|UMAP_nn15                  ok (17.25s fit)
+  [ 0.11h] A|30s|state|nc5|UMAP_nn50                  ok (18.78s fit)
+  [ 0.11h] A|30s|state|nc5|Diffusion_a1.0             ok (1.58s fit)
+  [ 0.11h] A|30s|state|nc5|Diffusion_a0.5             ok (1.56s fit)
+  [ 0.11h] A|30s|flow|nc2|PCA                         ok (0.0s fit)
+  [ 0.11h] A|30s|flow|nc2|KernelPCA_rbf               ok (0.2s fit)
+  [ 0.11h] A|30s|flow|nc2|Isomap_nn10                 ok (1.34s fit)
+  [ 0.11h] A|30s|flow|nc2|Isomap_nn30                 ok (2.37s fit)
+  [ 0.11h] A|30s|flow|nc2|LLE                         ok (0.33s fit)
+  [ 0.11h] A|30s|flow|nc2|UMAP_nn15                   ok (16.97s fit)
+  [ 0.12h] A|30s|flow|nc2|UMAP_nn50                   ok (18.27s fit)
+  [ 0.12h] A|30s|flow|nc2|Diffusion_a1.0              ok (1.6s fit)
+  [ 0.12h] A|30s|flow|nc2|Diffusion_a0.5              ok (1.57s fit)
+  [ 0.12h] A|30s|flow|nc3|PCA                         ok (0.0s fit)
+  [ 0.12h] A|30s|flow|nc3|KernelPCA_rbf               ok (0.19s fit)
+  [ 0.12h] A|30s|flow|nc3|Isomap_nn10                 ok (1.38s fit)
+  [ 0.12h] A|30s|flow|nc3|Isomap_nn30                 ok (2.28s fit)
+  [ 0.12h] A|30s|flow|nc3|LLE                         ok (0.35s fit)
+  [ 0.13h] A|30s|flow|nc3|UMAP_nn15                   ok (17.0s fit)
+  [ 0.13h] A|30s|flow|nc3|UMAP_nn50                   ok (18.67s fit)
+  [ 0.13h] A|30s|flow|nc3|Diffusion_a1.0              ok (1.61s fit)
+  [ 0.13h] A|30s|flow|nc3|Diffusion_a0.5              ok (1.61s fit)
+  [ 0.13h] A|30s|flow|nc5|PCA                         ok (0.0s fit)
+  [ 0.13h] A|30s|flow|nc5|KernelPCA_rbf               ok (0.19s fit)
+  [ 0.13h] A|30s|flow|nc5|Isomap_nn10                 ok (1.37s fit)
+  [ 0.14h] A|30s|flow|nc5|Isomap_nn30                 ok (2.3s fit)
+  [ 0.14h] A|30s|flow|nc5|LLE                         ok (0.33s fit)
+  [ 0.14h] A|30s|flow|nc5|UMAP_nn15                   ok (17.05s fit)
