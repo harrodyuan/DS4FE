@@ -184,3 +184,111 @@
   [ 0.24h] A|1s|state|nc2|Isomap_nn30                 ok (2.63s fit)
   [ 0.24h] A|1s|state|nc2|LLE                         ok (0.48s fit)
   [ 0.24h] A|1s|state|nc2|UMAP_nn15                   ok (17.85s fit)
+  [ 0.25h] A|1s|state|nc2|UMAP_nn50                   ok (19.23s fit)
+  [ 0.25h] A|1s|state|nc2|Diffusion_a1.0              ok (1.63s fit)
+  [ 0.25h] A|1s|state|nc2|Diffusion_a0.5              ok (1.65s fit)
+  [ 0.25h] A|1s|state|nc3|PCA                         ok (0.0s fit)
+  [ 0.25h] A|1s|state|nc3|KernelPCA_rbf               ok (0.21s fit)
+  [ 0.25h] A|1s|state|nc3|Isomap_nn10                 ok (1.66s fit)
+  [ 0.25h] A|1s|state|nc3|Isomap_nn30                 ok (2.65s fit)
+  [ 0.25h] A|1s|state|nc3|LLE                         ok (0.47s fit)
+  [ 0.26h] A|1s|state|nc3|UMAP_nn15                   ok (18.04s fit)
+  [ 0.26h] A|1s|state|nc3|UMAP_nn50                   ok (19.51s fit)
+  [ 0.26h] A|1s|state|nc3|Diffusion_a1.0              ok (1.6s fit)
+  [ 0.26h] A|1s|state|nc3|Diffusion_a0.5              ok (1.58s fit)
+  [ 0.26h] A|1s|state|nc5|PCA                         ok (0.0s fit)
+  [ 0.26h] A|1s|state|nc5|KernelPCA_rbf               ok (0.2s fit)
+  [ 0.27h] A|1s|state|nc5|Isomap_nn10                 ok (1.54s fit)
+  [ 0.27h] A|1s|state|nc5|Isomap_nn30                 ok (2.59s fit)
+  [ 0.27h] A|1s|state|nc5|LLE                         ok (0.48s fit)
+  [ 0.27h] A|1s|state|nc5|UMAP_nn15                   ok (17.85s fit)
+  [ 0.28h] A|1s|state|nc5|UMAP_nn50                   ok (19.55s fit)
+  [ 0.28h] A|1s|state|nc5|Diffusion_a1.0              ok (1.58s fit)
+  [ 0.28h] A|1s|state|nc5|Diffusion_a0.5              ok (1.6s fit)
+  [ 0.28h] A|1s|flow|nc2|PCA                          ok (0.0s fit)
+  [ 0.28h] A|1s|flow|nc2|KernelPCA_rbf                ok (0.19s fit)
+  [ 0.28h] A|1s|flow|nc2|Isomap_nn10                  ok (1.62s fit)
+  [ 0.28h] A|1s|flow|nc2|Isomap_nn30                  ok (2.65s fit)
+  [ 0.28h] A|1s|flow|nc2|LLE                          ok (0.34s fit)
+  [ 0.28h] A|1s|flow|nc2|UMAP_nn15                    ok (17.79s fit)
+  [ 0.29h] A|1s|flow|nc2|UMAP_nn50                    ok (19.24s fit)
+  [ 0.29h] A|1s|flow|nc2|Diffusion_a1.0               ok (1.6s fit)
+  [ 0.29h] A|1s|flow|nc2|Diffusion_a0.5               ok (1.59s fit)
+  [ 0.29h] A|1s|flow|nc3|PCA                          ok (0.0s fit)
+  [ 0.29h] A|1s|flow|nc3|KernelPCA_rbf                ok (0.2s fit)
+  [ 0.29h] A|1s|flow|nc3|Isomap_nn10                  ok (1.5s fit)
+  [ 0.29h] A|1s|flow|nc3|Isomap_nn30                  ok (2.68s fit)
+  [ 0.29h] A|1s|flow|nc3|LLE                          ok (0.35s fit)
+  [ 0.30h] A|1s|flow|nc3|UMAP_nn15                    ok (17.79s fit)
+  [ 0.30h] A|1s|flow|nc3|UMAP_nn50                    ok (19.23s fit)
+  [ 0.30h] A|1s|flow|nc3|Diffusion_a1.0               ok (1.59s fit)
+  [ 0.30h] A|1s|flow|nc3|Diffusion_a0.5               ok (1.61s fit)
+  [ 0.30h] A|1s|flow|nc5|PCA                          ok (0.0s fit)
+  [ 0.30h] A|1s|flow|nc5|KernelPCA_rbf                ok (0.2s fit)
+  [ 0.31h] A|1s|flow|nc5|Isomap_nn10                  ok (1.62s fit)
+  [ 0.31h] A|1s|flow|nc5|Isomap_nn30                  ok (2.67s fit)
+  [ 0.31h] A|1s|flow|nc5|LLE                          ok (0.34s fit)
+  [ 0.31h] A|1s|flow|nc5|UMAP_nn15                    ok (17.66s fit)
+  [ 0.32h] A|1s|flow|nc5|UMAP_nn50                    ok (19.54s fit)
+  [ 0.32h] A|1s|flow|nc5|Diffusion_a1.0               ok (1.6s fit)
+  [ 0.32h] A|1s|flow|nc5|Diffusion_a0.5               ok (1.58s fit)
+  [ 0.32h] A|1s|dynamics|nc2|PCA                      ok (0.0s fit)
+  [ 0.32h] A|1s|dynamics|nc2|KernelPCA_rbf            ok (0.19s fit)
+  [ 0.32h] A|1s|dynamics|nc2|Isomap_nn10              ok (1.66s fit)
+  [ 0.32h] A|1s|dynamics|nc2|Isomap_nn30              ok (2.81s fit)
+  [ 0.32h] A|1s|dynamics|nc2|LLE                      ok (0.4s fit)
+  [ 0.32h] A|1s|dynamics|nc2|UMAP_nn15                ok (17.64s fit)
+  [ 0.33h] A|1s|dynamics|nc2|UMAP_nn50                ok (19.25s fit)
+  [ 0.33h] A|1s|dynamics|nc2|Diffusion_a1.0           ok (1.56s fit)
+  [ 0.33h] A|1s|dynamics|nc2|Diffusion_a0.5           ok (1.56s fit)
+  [ 0.33h] A|1s|dynamics|nc3|PCA                      ok (0.0s fit)
+  [ 0.33h] A|1s|dynamics|nc3|KernelPCA_rbf            ok (0.2s fit)
+  [ 0.33h] A|1s|dynamics|nc3|Isomap_nn10              ok (1.68s fit)
+  [ 0.33h] A|1s|dynamics|nc3|Isomap_nn30              ok (2.77s fit)
+  [ 0.33h] A|1s|dynamics|nc3|LLE                      ok (0.38s fit)
+  [ 0.34h] A|1s|dynamics|nc3|UMAP_nn15                ok (17.71s fit)
+  [ 0.34h] A|1s|dynamics|nc3|UMAP_nn50                ok (19.22s fit)
+  [ 0.34h] A|1s|dynamics|nc3|Diffusion_a1.0           ok (1.58s fit)
+  [ 0.34h] A|1s|dynamics|nc3|Diffusion_a0.5           ok (1.6s fit)
+
+[phase A] bar=30s: loading features ...
+    building feat_NVDA_calm_30s.parquet ...
+  reading book  lob_mbp1_NVDA_calm_oct2023.parquet
+  reading trades trades_NVDA_calm_oct2023.parquet
+Traceback (most recent call last):
+  File "/Users/harold/4. RA work/Factor_Training_Eng/DS4FE/experiments/lob_manifold/sweep.py", line 374, in <module>
+    main()
+  File "/Users/harold/4. RA work/Factor_Training_Eng/DS4FE/experiments/lob_manifold/sweep.py", line 288, in main
+    df = load_bar_features(bar)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/harold/4. RA work/Factor_Training_Eng/DS4FE/experiments/lob_manifold/sweep.py", line 100, in load_bar_features
+    d = bf.build_one(sym, pk, bar)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/harold/4. RA work/Factor_Training_Eng/DS4FE/experiments/lob_manifold/build_features.py", line 189, in build_one
+    df = derive_features(book, trade, bar)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/harold/4. RA work/Factor_Training_Eng/DS4FE/experiments/lob_manifold/build_features.py", line 177, in derive_features
+    df = df.groupby("date", group_keys=False).apply(per_day)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1824, in apply
+    result = self._python_apply_general(f, self._selected_obj)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1885, in _python_apply_general
+    values, mutated = self._grouper.apply_groupwise(f, data, self.axis)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/groupby/ops.py", line 919, in apply_groupwise
+    res = f(group)
+          ^^^^^^^^
+  File "/Users/harold/4. RA work/Factor_Training_Eng/DS4FE/experiments/lob_manifold/build_features.py", line 167, in per_day
+    g["realized_vol_30s"] = (g["short_return"].rolling(h30, min_periods=2)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/generic.py", line 12599, in rolling
+    return Rolling(
+           ^^^^^^^^
+  File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/window/rolling.py", line 170, in __init__
+    self._validate()
+  File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/window/rolling.py", line 1869, in _validate
+    super()._validate()
+  File "/Users/harold/miniconda3/lib/python3.12/site-packages/pandas/core/window/rolling.py", line 181, in _validate
+    raise ValueError(
+ValueError: min_periods 2 must be <= window 1
