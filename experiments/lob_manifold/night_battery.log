@@ -1,0 +1,85 @@
+
+===== SEED 0 (1/3) =====
+  baseline kNN R2 fwdvol: cur-vol-only=0.877  raw19D=0.796
+  dim=2 done (52s)
+  dim=3 done (45s)
+  dim=5 done (44s)
+
+===== SEED 1 (2/3) =====
+  baseline kNN R2 fwdvol: cur-vol-only=0.877  raw19D=0.800
+  dim=2 done (47s)
+  dim=3 done (43s)
+  dim=5 done (44s)
+
+===== SEED 2 (3/3) =====
+  baseline kNN R2 fwdvol: cur-vol-only=0.876  raw19D=0.796
+  dim=2 done (46s)
+  dim=3 done (43s)
+  dim=5 done (44s)
+
+================ A. DIMENSION SWEEP (mean +/- std over seeds) ================
+                 knn_r2_fwdvol         knn_vol_auc        
+                          mean     std        mean     std
+dim method                                                
+0   cur_vol_only        0.8766  0.0005         NaN     NaN
+2   Diffusion           0.6114  0.0411      0.8685  0.0248
+    Isomap              0.3385  0.0028      0.7623  0.0068
+    PCA                 0.3492  0.1199      0.7424  0.0660
+    UMAP                0.5898  0.0205      0.8681  0.0066
+3   Diffusion           0.7399  0.0065      0.9221  0.0022
+    Isomap              0.3840  0.0093      0.7886  0.0046
+    PCA                 0.7113  0.0150      0.9062  0.0054
+    UMAP                0.6558  0.0096      0.8943  0.0011
+5   Diffusion           0.8081  0.0118      0.9467  0.0026
+    Isomap              0.7647  0.0024      0.9324  0.0019
+    PCA                 0.7692  0.0066      0.9311  0.0031
+    UMAP                0.7013  0.0049      0.9106  0.0025
+10  PCA                 0.8455  0.0011      0.9637  0.0006
+19  raw_features        0.7973  0.0022      0.9519  0.0013
+
+================ D. PROBE-k SWEEP (dim=2, mean over seeds) ================
+               knn_r2_fwdvol  knn_vol_auc
+method    k                              
+Diffusion 10          0.5918       0.8532
+          25          0.6114       0.8685
+          50          0.6137       0.8727
+          100         0.6098       0.8741
+Isomap    10          0.3033       0.7429
+          25          0.3385       0.7623
+          50          0.3459       0.7692
+          100         0.3469       0.7718
+PCA       10          0.3148       0.7251
+          25          0.3492       0.7424
+          50          0.3608       0.7500
+          100         0.3649       0.7552
+UMAP      10          0.5690       0.8543
+          25          0.5898       0.8681
+          50          0.5927       0.8719
+          100         0.5869       0.8706
+
+================ E. PER-SYMBOL (dim=2, mean over seeds) ================
+                  knn_r2_fwdvol  knn_vol_auc
+symbol method                               
+AAPL   Diffusion         0.6780       0.8951
+       Isomap            0.4340       0.8230
+       PCA               0.4172       0.8007
+       UMAP              0.6071       0.8839
+MSFT   Diffusion         0.4401       0.8384
+       Isomap            0.1827       0.6948
+       PCA               0.2218       0.7170
+       UMAP              0.3196       0.7977
+NVDA   Diffusion         0.5036       0.8626
+       Isomap            0.4632       0.8906
+       PCA               0.5722       0.9092
+       UMAP              0.6605       0.9150
+SPY    Diffusion         0.4447       0.8781
+       Isomap            0.1677       0.7502
+       PCA               0.2364       0.7417
+       UMAP              0.1703       0.7695
+TSLA   Diffusion         0.5762       0.8301
+       Isomap            0.2345       0.6942
+       PCA               0.3077       0.7065
+       UMAP              0.5040       0.7926
+
+TOTAL TIME: 6.9 min
+saved: night_dim_sweep.csv, night_probek.csv, night_persymbol.csv

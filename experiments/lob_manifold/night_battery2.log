@@ -1,0 +1,29 @@
+
+===== SEED 0 =====
+  dim=2 done
+  dim=3 done
+  dim=5 done
+
+===== SEED 1 =====
+  dim=2 done
+  dim=3 done
+  dim=5 done
+
+===== MULTI-TARGET kNN AUC (mean over seeds) =====
+                  depth_auc  spread_auc
+dim method                             
+2   Diffusion        0.5775      0.6620
+    Isomap           0.5813      0.5414
+    PCA              0.5755      0.5313
+    UMAP             0.7077      0.6113
+3   Diffusion        0.6141      0.7610
+    Isomap           0.7555      0.6451
+    PCA              0.6048      0.5468
+    UMAP             0.7309      0.6331
+5   Diffusion        0.6903      0.7404
+    Isomap           0.7646      0.6665
+    PCA              0.7869      0.7347
+    UMAP             0.7386      0.6451
+19  raw_features     0.8126      0.8095
+
+TOTAL TIME: 4.4 min  -> night_multitarget.csv

@@ -1,0 +1,186 @@
+[sweep] resuming: 0 configs already complete
+[sweep] budget: 5.0h   smoke=False
+
+[phase A] bar=5s: loading features ...
+  [ 0.00h] A|5s|full|nc2|PCA                          ok (0.0s fit)
+  [ 0.00h] A|5s|full|nc2|KernelPCA_rbf                ok (0.24s fit)
+  [ 0.00h] A|5s|full|nc2|Isomap_nn10                  ok (1.57s fit)
+  [ 0.00h] A|5s|full|nc2|Isomap_nn30                  ok (2.38s fit)
+  [ 0.00h] A|5s|full|nc2|LLE                          ok (0.86s fit)
+  [ 0.01h] A|5s|full|nc2|UMAP_nn15                    ok (22.75s fit)
+  [ 0.01h] A|5s|full|nc2|UMAP_nn50                    ok (19.91s fit)
+  [ 0.01h] A|5s|full|nc2|Diffusion_a1.0               ok (1.77s fit)
+  [ 0.01h] A|5s|full|nc2|Diffusion_a0.5               ok (1.76s fit)
+  [ 0.01h] A|5s|full|nc3|PCA                          ok (0.0s fit)
+  [ 0.02h] A|5s|full|nc3|KernelPCA_rbf                ok (0.21s fit)
+  [ 0.02h] A|5s|full|nc3|Isomap_nn10                  ok (1.5s fit)
+  [ 0.02h] A|5s|full|nc3|Isomap_nn30                  ok (2.37s fit)
+  [ 0.02h] A|5s|full|nc3|LLE                          ok (0.82s fit)
+  [ 0.02h] A|5s|full|nc3|UMAP_nn15                    ok (17.86s fit)
+  [ 0.03h] A|5s|full|nc3|UMAP_nn50                    ok (19.6s fit)
+  [ 0.03h] A|5s|full|nc3|Diffusion_a1.0               ok (1.76s fit)
+  [ 0.03h] A|5s|full|nc3|Diffusion_a0.5               ok (2.0s fit)
+  [ 0.03h] A|5s|full|nc5|PCA                          ok (0.0s fit)
+  [ 0.03h] A|5s|full|nc5|KernelPCA_rbf                ok (0.22s fit)
+  [ 0.03h] A|5s|full|nc5|Isomap_nn10                  ok (1.5s fit)
+  [ 0.03h] A|5s|full|nc5|Isomap_nn30                  ok (2.43s fit)
+  [ 0.03h] A|5s|full|nc5|LLE                          ok (0.83s fit)
+  [ 0.04h] A|5s|full|nc5|UMAP_nn15                    ok (18.04s fit)
+  [ 0.04h] A|5s|full|nc5|UMAP_nn50                    ok (19.72s fit)
+  [ 0.04h] A|5s|full|nc5|Diffusion_a1.0               ok (1.8s fit)
+  [ 0.04h] A|5s|full|nc5|Diffusion_a0.5               ok (1.74s fit)
+  [ 0.04h] A|5s|full|nc10|PCA                         ok (0.0s fit)
+  [ 0.04h] A|5s|full|nc10|KernelPCA_rbf               ok (1.08s fit)
+  [ 0.04h] A|5s|full|nc10|Isomap_nn10                 ok (2.39s fit)
+  [ 0.05h] A|5s|full|nc10|Isomap_nn30                 ok (3.35s fit)
+  [ 0.05h] A|5s|full|nc10|LLE                         ok (1.11s fit)
+  [ 0.05h] A|5s|full|nc10|UMAP_nn15                   ok (18.54s fit)
+  [ 0.06h] A|5s|full|nc10|UMAP_nn50                   ok (20.12s fit)
+  [ 0.06h] A|5s|full|nc10|Diffusion_a1.0              ok (1.84s fit)
+  [ 0.06h] A|5s|full|nc10|Diffusion_a0.5              ok (1.8s fit)
+  [ 0.06h] A|5s|state|nc2|PCA                         ok (0.0s fit)
+  [ 0.06h] A|5s|state|nc2|KernelPCA_rbf               ok (0.2s fit)
+  [ 0.06h] A|5s|state|nc2|Isomap_nn10                 ok (1.58s fit)
+  [ 0.06h] A|5s|state|nc2|Isomap_nn30                 ok (2.56s fit)
+  [ 0.06h] A|5s|state|nc2|LLE                         ok (0.47s fit)
+  [ 0.07h] A|5s|state|nc2|UMAP_nn15                   ok (17.97s fit)
+  [ 0.07h] A|5s|state|nc2|UMAP_nn50                   ok (19.31s fit)
+  [ 0.07h] A|5s|state|nc2|Diffusion_a1.0              ok (1.6s fit)
+  [ 0.07h] A|5s|state|nc2|Diffusion_a0.5              ok (1.62s fit)
+  [ 0.07h] A|5s|state|nc3|PCA                         ok (0.0s fit)
+  [ 0.07h] A|5s|state|nc3|KernelPCA_rbf               ok (0.22s fit)
+  [ 0.07h] A|5s|state|nc3|Isomap_nn10                 ok (1.61s fit)
+  [ 0.07h] A|5s|state|nc3|Isomap_nn30                 ok (2.6s fit)
+  [ 0.07h] A|5s|state|nc3|LLE                         ok (0.5s fit)
+  [ 0.08h] A|5s|state|nc3|UMAP_nn15                   ok (18.06s fit)
+  [ 0.08h] A|5s|state|nc3|UMAP_nn50                   ok (19.56s fit)
+  [ 0.09h] A|5s|state|nc3|Diffusion_a1.0              ok (1.65s fit)
+  [ 0.09h] A|5s|state|nc3|Diffusion_a0.5              ok (1.64s fit)
+  [ 0.09h] A|5s|state|nc5|PCA                         ok (0.0s fit)
+  [ 0.09h] A|5s|state|nc5|KernelPCA_rbf               ok (0.2s fit)
+  [ 0.09h] A|5s|state|nc5|Isomap_nn10                 ok (1.61s fit)
+  [ 0.09h] A|5s|state|nc5|Isomap_nn30                 ok (2.58s fit)
+  [ 0.09h] A|5s|state|nc5|LLE                         ok (0.48s fit)
+  [ 0.09h] A|5s|state|nc5|UMAP_nn15                   ok (17.85s fit)
+  [ 0.10h] A|5s|state|nc5|UMAP_nn50                   ok (19.35s fit)
+  [ 0.10h] A|5s|state|nc5|Diffusion_a1.0              ok (1.6s fit)
+  [ 0.10h] A|5s|state|nc5|Diffusion_a0.5              ok (1.61s fit)
+  [ 0.10h] A|5s|flow|nc2|PCA                          ok (0.0s fit)
+  [ 0.10h] A|5s|flow|nc2|KernelPCA_rbf                ok (0.2s fit)
+  [ 0.10h] A|5s|flow|nc2|Isomap_nn10                  ok (1.51s fit)
+  [ 0.10h] A|5s|flow|nc2|Isomap_nn30                  ok (2.45s fit)
+  [ 0.10h] A|5s|flow|nc2|LLE                          ok (0.41s fit)
+  [ 0.11h] A|5s|flow|nc2|UMAP_nn15                    ok (17.58s fit)
+  [ 0.11h] A|5s|flow|nc2|UMAP_nn50                    ok (19.12s fit)
+  [ 0.11h] A|5s|flow|nc2|Diffusion_a1.0               ok (1.65s fit)
+  [ 0.11h] A|5s|flow|nc2|Diffusion_a0.5               ok (1.67s fit)
+  [ 0.11h] A|5s|flow|nc3|PCA                          ok (0.0s fit)
+  [ 0.11h] A|5s|flow|nc3|KernelPCA_rbf                ok (0.2s fit)
+  [ 0.11h] A|5s|flow|nc3|Isomap_nn10                  ok (1.48s fit)
+  [ 0.11h] A|5s|flow|nc3|Isomap_nn30                  ok (2.59s fit)
+  [ 0.11h] A|5s|flow|nc3|LLE                          ok (0.45s fit)
+  [ 0.12h] A|5s|flow|nc3|UMAP_nn15                    ok (17.93s fit)
+  [ 0.12h] A|5s|flow|nc3|UMAP_nn50                    ok (19.34s fit)
+  [ 0.13h] A|5s|flow|nc3|Diffusion_a1.0               ok (1.66s fit)
+  [ 0.13h] A|5s|flow|nc3|Diffusion_a0.5               ok (1.69s fit)
+  [ 0.13h] A|5s|flow|nc5|PCA                          ok (0.0s fit)
+  [ 0.13h] A|5s|flow|nc5|KernelPCA_rbf                ok (0.2s fit)
+  [ 0.13h] A|5s|flow|nc5|Isomap_nn10                  ok (1.5s fit)
+  [ 0.13h] A|5s|flow|nc5|Isomap_nn30                  ok (2.52s fit)
+  [ 0.13h] A|5s|flow|nc5|LLE                          ok (0.4s fit)
+  [ 0.13h] A|5s|flow|nc5|UMAP_nn15                    ok (17.92s fit)
+  [ 0.14h] A|5s|flow|nc5|UMAP_nn50                    ok (19.4s fit)
+  [ 0.14h] A|5s|flow|nc5|Diffusion_a1.0               ok (1.62s fit)
+  [ 0.14h] A|5s|flow|nc5|Diffusion_a0.5               ok (1.63s fit)
+  [ 0.14h] A|5s|dynamics|nc2|PCA                      ok (0.0s fit)
+  [ 0.14h] A|5s|dynamics|nc2|KernelPCA_rbf            ok (0.19s fit)
+  [ 0.14h] A|5s|dynamics|nc2|Isomap_nn10              ok (1.56s fit)
+  [ 0.14h] A|5s|dynamics|nc2|Isomap_nn30              ok (2.69s fit)
+  [ 0.14h] A|5s|dynamics|nc2|LLE                      ok (0.43s fit)
+  [ 0.15h] A|5s|dynamics|nc2|UMAP_nn15                ok (17.55s fit)
+  [ 0.15h] A|5s|dynamics|nc2|UMAP_nn50                ok (19.18s fit)
+  [ 0.15h] A|5s|dynamics|nc2|Diffusion_a1.0           ok (1.56s fit)
+  [ 0.15h] A|5s|dynamics|nc2|Diffusion_a0.5           ok (1.56s fit)
+  [ 0.15h] A|5s|dynamics|nc3|PCA                      ok (0.0s fit)
+  [ 0.15h] A|5s|dynamics|nc3|KernelPCA_rbf            ok (0.2s fit)
+  [ 0.15h] A|5s|dynamics|nc3|Isomap_nn10              ok (1.59s fit)
+  [ 0.15h] A|5s|dynamics|nc3|Isomap_nn30              ok (2.7s fit)
+  [ 0.15h] A|5s|dynamics|nc3|LLE                      ok (0.43s fit)
+  [ 0.16h] A|5s|dynamics|nc3|UMAP_nn15                ok (17.7s fit)
+  [ 0.16h] A|5s|dynamics|nc3|UMAP_nn50                ok (19.53s fit)
+  [ 0.17h] A|5s|dynamics|nc3|Diffusion_a1.0           ok (1.8s fit)
+  [ 0.17h] A|5s|dynamics|nc3|Diffusion_a0.5           ok (1.57s fit)
+
+[phase A] bar=1s: loading features ...
+    building feat_NVDA_calm_1s.parquet ...
+  reading book  lob_mbp1_NVDA_calm_oct2023.parquet
+  reading trades trades_NVDA_calm_oct2023.parquet
+    building feat_NVDA_stress_1s.parquet ...
+  reading book  lob_mbp1_NVDA_stress_aug2024.parquet
+  reading trades trades_NVDA_stress_aug2024.parquet
+    building feat_AAPL_calm_1s.parquet ...
+  reading book  lob_mbp1_AAPL_calm_oct2023.parquet
+  reading trades trades_AAPL_calm_oct2023.parquet
+    building feat_AAPL_stress_1s.parquet ...
+  reading book  lob_mbp1_AAPL_stress_aug2024.parquet
+  reading trades trades_AAPL_stress_aug2024.parquet
+    building feat_MSFT_calm_1s.parquet ...
+  reading book  lob_mbp1_MSFT_calm_oct2023.parquet
+  reading trades trades_MSFT_calm_oct2023.parquet
+    building feat_MSFT_stress_1s.parquet ...
+  reading book  lob_mbp1_MSFT_stress_aug2024.parquet
+  reading trades trades_MSFT_stress_aug2024.parquet
+    building feat_SPY_calm_1s.parquet ...
+  reading book  lob_mbp1_SPY_calm_oct2023.parquet
+  reading trades trades_SPY_calm_oct2023.parquet
+    building feat_SPY_stress_1s.parquet ...
+  reading book  lob_mbp1_SPY_stress_aug2024.parquet
+  reading trades trades_SPY_stress_aug2024.parquet
+    building feat_TSLA_calm_1s.parquet ...
+  reading book  lob_mbp1_TSLA_calm_oct2023.parquet
+  reading trades trades_TSLA_calm_oct2023.parquet
+    building feat_TSLA_stress_1s.parquet ...
+  reading book  lob_mbp1_TSLA_stress_aug2024.parquet
+  reading trades trades_TSLA_stress_aug2024.parquet
+  [ 0.18h] A|1s|full|nc2|PCA                          ok (0.01s fit)
+  [ 0.18h] A|1s|full|nc2|KernelPCA_rbf                ok (0.21s fit)
+  [ 0.18h] A|1s|full|nc2|Isomap_nn10                  ok (1.55s fit)
+  [ 0.18h] A|1s|full|nc2|Isomap_nn30                  ok (2.55s fit)
+  [ 0.18h] A|1s|full|nc2|LLE                          ok (0.8s fit)
+  [ 0.19h] A|1s|full|nc2|UMAP_nn15                    ok (18.02s fit)
+  [ 0.19h] A|1s|full|nc2|UMAP_nn50                    ok (19.45s fit)
+  [ 0.19h] A|1s|full|nc2|Diffusion_a1.0               ok (1.73s fit)
+  [ 0.19h] A|1s|full|nc2|Diffusion_a0.5               ok (1.71s fit)
+  [ 0.19h] A|1s|full|nc3|PCA                          ok (0.0s fit)
+  [ 0.19h] A|1s|full|nc3|KernelPCA_rbf                ok (0.2s fit)
+  [ 0.19h] A|1s|full|nc3|Isomap_nn10                  ok (1.59s fit)
+  [ 0.19h] A|1s|full|nc3|Isomap_nn30                  ok (2.55s fit)
+  [ 0.20h] A|1s|full|nc3|LLE                          ok (0.8s fit)
+  [ 0.20h] A|1s|full|nc3|UMAP_nn15                    ok (18.08s fit)
+  [ 0.21h] A|1s|full|nc3|UMAP_nn50                    ok (19.49s fit)
+  [ 0.21h] A|1s|full|nc3|Diffusion_a1.0               ok (1.73s fit)
+  [ 0.21h] A|1s|full|nc3|Diffusion_a0.5               ok (1.71s fit)
+  [ 0.21h] A|1s|full|nc5|PCA                          ok (0.0s fit)
+  [ 0.21h] A|1s|full|nc5|KernelPCA_rbf                ok (0.2s fit)
+  [ 0.21h] A|1s|full|nc5|Isomap_nn10                  ok (1.6s fit)
+  [ 0.21h] A|1s|full|nc5|Isomap_nn30                  ok (2.5s fit)
+  [ 0.21h] A|1s|full|nc5|LLE                          ok (0.8s fit)
+  [ 0.21h] A|1s|full|nc5|UMAP_nn15                    ok (18.01s fit)
+  [ 0.22h] A|1s|full|nc5|UMAP_nn50                    ok (19.68s fit)
+  [ 0.22h] A|1s|full|nc5|Diffusion_a1.0               ok (1.72s fit)
+  [ 0.22h] A|1s|full|nc5|Diffusion_a0.5               ok (1.71s fit)
+  [ 0.22h] A|1s|full|nc10|PCA                         ok (0.0s fit)
+  [ 0.22h] A|1s|full|nc10|KernelPCA_rbf               ok (1.05s fit)
+  [ 0.22h] A|1s|full|nc10|Isomap_nn10                 ok (2.4s fit)
+  [ 0.22h] A|1s|full|nc10|Isomap_nn30                 ok (3.38s fit)
+  [ 0.23h] A|1s|full|nc10|LLE                         ok (1.11s fit)
+  [ 0.23h] A|1s|full|nc10|UMAP_nn15                   ok (18.21s fit)
+  [ 0.24h] A|1s|full|nc10|UMAP_nn50                   ok (19.86s fit)
+  [ 0.24h] A|1s|full|nc10|Diffusion_a1.0              ok (1.75s fit)
+  [ 0.24h] A|1s|full|nc10|Diffusion_a0.5              ok (1.77s fit)
+  [ 0.24h] A|1s|state|nc2|PCA                         ok (0.0s fit)
+  [ 0.24h] A|1s|state|nc2|KernelPCA_rbf               ok (0.19s fit)
+  [ 0.24h] A|1s|state|nc2|Isomap_nn10                 ok (1.68s fit)
+  [ 0.24h] A|1s|state|nc2|Isomap_nn30                 ok (2.63s fit)
+  [ 0.24h] A|1s|state|nc2|LLE                         ok (0.48s fit)
+  [ 0.24h] A|1s|state|nc2|UMAP_nn15                   ok (17.85s fit)

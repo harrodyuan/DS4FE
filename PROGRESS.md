@@ -426,10 +426,32 @@ When low-dimensional structure exists in these financial datasets, it is linear 
 
 **Caveat to flag:** the surface builder uses linear interpolation in total-variance space, which can itself flatten mild curvature. A no-arbitrage-aware fit (e.g. SVI) before re-running ISOMAP is the natural robustness follow-up.
 
+### 15.3 — Overnight robustness battery: giving ISOMAP its fair shot (and the dimension control that kills it)
+
+Hypothesis raised after the IV result: maybe ISOMAP lost earlier only because every task was scored with a **RandomForest**, which can exploit any information-preserving layout and erases ISOMAP's structural edge (global geodesic *layout*). The fair test is a **weak model** (kNN / linear probe) on a **smooth target** (forward 60s realized vol). Built `experiments/lob_manifold/linear_probe.py` then a full battery `night_battery.py` (3 seeds, dims {2,3,5,10}, probe-k sweep, per-symbol, persistence baselines).
+
+**Initial (encouraging) finding under a kNN probe at 2-D:** nonlinear methods beat PCA on forward-vol prediction — Diffusion 0.61 / UMAP 0.59 vs PCA 0.35 / ISOMAP 0.34 (kNN R²).
+
+**Then three controls dismantled its significance:**
+
+| Control | Result |
+|---|---|
+| **Dimension** (decisive) | PCA-3 = **0.71** already beats the best nonlinear 2-D (0.61); PCA-5=0.77, PCA-10=0.85. The nonlinear edge exists *only* at exactly 2-D → a bottleneck artefact, not curvature |
+| **Persistence** | kNN on **current vol alone (1 feature) = 0.88** beats every 2-D embedding — the task is dominated by trivial autocorrelation |
+| **ISOMAP-specific** | ISOMAP is the *weakest* method at 2-D, passed by PCA from dim 3, and wins on **0 of 5 symbols**; UMAP/Diffusion are the better nonlinear methods |
+
+Ranking is stable across probe-k {10,25,50,100} and 3 seeds (std ≤ 0.04). Figure: `figures/lob_dimension_sweep.png`.
+
+**IV-surface weak probe** (`iv_probe.py`, TimeSeriesSplit, target = forward 5-day ATM-30 IV change): R² ≈ 0 for **all** methods (forward IV change is near-unpredictable); no PCA-vs-ISOMAP edge — consistent with the low-D-but-linear surface.
+
+**Combined verdict (reinforced):** even under the conditions designed to favour it, nonlinear DR does not beat PCA in any way that survives a dimension/persistence control. **PCA remains the right tool.** The contribution is the **four-control framework** (cross-over, dimension, persistence, intrinsic-dim) for vetting nonlinear DR on financial data — summarised in `PROFESSOR_MEMO.md`.
+
 ### Files added this week
 
 - `DS4FE_IV_Surface_v1.ipynb` — main deliverable (executed, 16 cells) + `figures/iv_surface_takeaway.svg`
-- `experiments/iv_surface/` — `db_check.py` (free cost checks), `pull_one_day.py`, `iv_lib.py` (Black-76 + parity), `pull_multi_day.py` (parallel resumable pull), `build_surfaces.py`
+- `experiments/iv_surface/` — `db_check.py` (free cost checks), `pull_one_day.py`, `iv_lib.py` (Black-76 + parity), `pull_multi_day.py` (parallel resumable pull), `build_surfaces.py`, `iv_probe.py` (+ `iv_probe_metrics.csv`)
+- `experiments/lob_manifold/` — `linear_probe.py`, `night_battery.py`, `make_night_figure.py` (+ `night_dim_sweep.csv`, `night_probek.csv`, `night_persymbol.csv`)
+- `figures/lob_dimension_sweep.png`; `PROFESSOR_MEMO.md` (half-page verdict)
 - `data/iv/` — 523 cached daily IV tables + `surfaces.parquet` (523×63) + `surface_grid.json`
 
 ---
