@@ -423,3 +423,122 @@ Current thread 0x00000001f7f6de80 (most recent call first):
   [ 0.14h] A|30s|flow|nc5|Isomap_nn30                 ok (2.3s fit)
   [ 0.14h] A|30s|flow|nc5|LLE                         ok (0.33s fit)
   [ 0.14h] A|30s|flow|nc5|UMAP_nn15                   ok (17.05s fit)
+  [ 0.15h] A|30s|flow|nc5|UMAP_nn50                   ok (18.75s fit)
+  [ 0.15h] A|30s|flow|nc5|Diffusion_a1.0              ok (1.59s fit)
+  [ 0.15h] A|30s|flow|nc5|Diffusion_a0.5              ok (1.57s fit)
+  [ 0.15h] A|30s|dynamics|nc2|PCA                     ok (0.0s fit)
+  [ 0.15h] A|30s|dynamics|nc2|KernelPCA_rbf           ok (0.19s fit)
+  [ 0.15h] A|30s|dynamics|nc2|Isomap_nn10             ok (1.44s fit)
+  [ 0.15h] A|30s|dynamics|nc2|Isomap_nn30             ok (2.54s fit)
+  [ 0.15h] A|30s|dynamics|nc2|LLE                     ok (0.43s fit)
+  [ 0.15h] A|30s|dynamics|nc2|UMAP_nn15               ok (16.92s fit)
+  [ 0.16h] A|30s|dynamics|nc2|UMAP_nn50               ok (18.32s fit)
+  [ 0.16h] A|30s|dynamics|nc2|Diffusion_a1.0          ok (1.52s fit)
+  [ 0.16h] A|30s|dynamics|nc2|Diffusion_a0.5          ok (1.51s fit)
+  [ 0.16h] A|30s|dynamics|nc3|PCA                     ok (0.0s fit)
+  [ 0.16h] A|30s|dynamics|nc3|KernelPCA_rbf           ok (0.19s fit)
+  [ 0.16h] A|30s|dynamics|nc3|Isomap_nn10             ok (1.42s fit)
+  [ 0.16h] A|30s|dynamics|nc3|Isomap_nn30             ok (2.5s fit)
+  [ 0.16h] A|30s|dynamics|nc3|LLE                     ok (0.41s fit)
+  [ 0.17h] A|30s|dynamics|nc3|UMAP_nn15               ok (16.96s fit)
+  [ 0.17h] A|30s|dynamics|nc3|UMAP_nn50               ok (18.19s fit)
+  [ 0.17h] A|30s|dynamics|nc3|Diffusion_a1.0          ok (1.5s fit)
+  [ 0.17h] A|30s|dynamics|nc3|Diffusion_a0.5          ok (1.5s fit)
+  [ 0.17h] B|5s|NVDA|nc2|PCA                          ok
+  [ 0.17h] B|5s|NVDA|nc2|KernelPCA_rbf                ok
+  [ 0.17h] B|5s|NVDA|nc2|Isomap_nn10                  ok
+  [ 0.17h] B|5s|NVDA|nc2|Isomap_nn30                  ok
+  [ 0.17h] B|5s|NVDA|nc2|LLE                          ok
+  [ 0.18h] B|5s|NVDA|nc2|UMAP_nn15                    ok
+  [ 0.18h] B|5s|NVDA|nc2|UMAP_nn50                    ok
+  [ 0.18h] B|5s|NVDA|nc2|Diffusion_a1.0               ok
+  [ 0.18h] B|5s|NVDA|nc2|Diffusion_a0.5               ok
+  [ 0.18h] B|5s|NVDA|nc3|PCA                          ok
+  [ 0.18h] B|5s|NVDA|nc3|KernelPCA_rbf                ok
+  [ 0.18h] B|5s|NVDA|nc3|Isomap_nn10                  ok
+  [ 0.18h] B|5s|NVDA|nc3|Isomap_nn30                  ok
+  [ 0.18h] B|5s|NVDA|nc3|LLE                          ok
+  [ 0.19h] B|5s|NVDA|nc3|UMAP_nn15                    ok
+  [ 0.19h] B|5s|NVDA|nc3|UMAP_nn50                    ok
+  [ 0.19h] B|5s|NVDA|nc3|Diffusion_a1.0               ok
+  [ 0.19h] B|5s|NVDA|nc3|Diffusion_a0.5               ok
+  [ 0.19h] B|5s|AAPL|nc2|PCA                          ok
+  [ 0.19h] B|5s|AAPL|nc2|KernelPCA_rbf                ok
+  [ 0.19h] B|5s|AAPL|nc2|Isomap_nn10                  ok
+  [ 0.19h] B|5s|AAPL|nc2|Isomap_nn30                  ok
+  [ 0.19h] B|5s|AAPL|nc2|LLE                          ok
+  [ 0.20h] B|5s|AAPL|nc2|UMAP_nn15                    ok
+  [ 0.20h] B|5s|AAPL|nc2|UMAP_nn50                    ok
+  [ 0.20h] B|5s|AAPL|nc2|Diffusion_a1.0               ok
+  [ 0.20h] B|5s|AAPL|nc2|Diffusion_a0.5               ok
+  [ 0.20h] B|5s|AAPL|nc3|PCA                          ok
+  [ 0.20h] B|5s|AAPL|nc3|KernelPCA_rbf                ok
+  [ 0.21h] B|5s|AAPL|nc3|Isomap_nn10                  ok
+  [ 0.21h] B|5s|AAPL|nc3|Isomap_nn30                  ok
+  [ 0.21h] B|5s|AAPL|nc3|LLE                          ok
+  [ 0.21h] B|5s|AAPL|nc3|UMAP_nn15                    ok
+  [ 0.21h] B|5s|AAPL|nc3|UMAP_nn50                    ok
+  [ 0.22h] B|5s|AAPL|nc3|Diffusion_a1.0               ok
+  [ 0.22h] B|5s|AAPL|nc3|Diffusion_a0.5               ok
+  [ 0.22h] B|5s|MSFT|nc2|PCA                          ok
+  [ 0.22h] B|5s|MSFT|nc2|KernelPCA_rbf                ok
+  [ 0.22h] B|5s|MSFT|nc2|Isomap_nn10                  ok
+  [ 0.22h] B|5s|MSFT|nc2|Isomap_nn30                  ok
+  [ 0.22h] B|5s|MSFT|nc2|LLE                          ok
+  [ 0.22h] B|5s|MSFT|nc2|UMAP_nn15                    ok
+  [ 0.23h] B|5s|MSFT|nc2|UMAP_nn50                    ok
+  [ 0.23h] B|5s|MSFT|nc2|Diffusion_a1.0               ok
+  [ 0.23h] B|5s|MSFT|nc2|Diffusion_a0.5               ok
+  [ 0.23h] B|5s|MSFT|nc3|PCA                          ok
+  [ 0.23h] B|5s|MSFT|nc3|KernelPCA_rbf                ok
+  [ 0.23h] B|5s|MSFT|nc3|Isomap_nn10                  ok
+  [ 0.23h] B|5s|MSFT|nc3|Isomap_nn30                  ok
+  [ 0.23h] B|5s|MSFT|nc3|LLE                          ok
+  [ 0.23h] B|5s|MSFT|nc3|UMAP_nn15                    ok
+  [ 0.24h] B|5s|MSFT|nc3|UMAP_nn50                    ok
+  [ 0.24h] B|5s|MSFT|nc3|Diffusion_a1.0               ok
+  [ 0.24h] B|5s|MSFT|nc3|Diffusion_a0.5               ok
+  [ 0.24h] B|5s|SPY|nc2|PCA                           ok
+  [ 0.24h] B|5s|SPY|nc2|KernelPCA_rbf                 ok
+  [ 0.24h] B|5s|SPY|nc2|Isomap_nn10                   ok
+  [ 0.24h] B|5s|SPY|nc2|Isomap_nn30                   ok
+  [ 0.24h] B|5s|SPY|nc2|LLE                           ok
+  [ 0.24h] B|5s|SPY|nc2|UMAP_nn15                     ok
+  [ 0.25h] B|5s|SPY|nc2|UMAP_nn50                     ok
+  [ 0.25h] B|5s|SPY|nc2|Diffusion_a1.0                ok
+  [ 0.25h] B|5s|SPY|nc2|Diffusion_a0.5                ok
+  [ 0.25h] B|5s|SPY|nc3|PCA                           ok
+  [ 0.25h] B|5s|SPY|nc3|KernelPCA_rbf                 ok
+  [ 0.25h] B|5s|SPY|nc3|Isomap_nn10                   ok
+  [ 0.25h] B|5s|SPY|nc3|Isomap_nn30                   ok
+  [ 0.25h] B|5s|SPY|nc3|LLE                           ok
+  [ 0.25h] B|5s|SPY|nc3|UMAP_nn15                     ok
+  [ 0.26h] B|5s|SPY|nc3|UMAP_nn50                     ok
+  [ 0.26h] B|5s|SPY|nc3|Diffusion_a1.0                ok
+  [ 0.26h] B|5s|SPY|nc3|Diffusion_a0.5                ok
+  [ 0.26h] B|5s|TSLA|nc2|PCA                          ok
+  [ 0.26h] B|5s|TSLA|nc2|KernelPCA_rbf                ok
+  [ 0.26h] B|5s|TSLA|nc2|Isomap_nn10                  ok
+  [ 0.26h] B|5s|TSLA|nc2|Isomap_nn30                  ok
+  [ 0.26h] B|5s|TSLA|nc2|LLE                          ok
+  [ 0.27h] B|5s|TSLA|nc2|UMAP_nn15                    ok
+  [ 0.27h] B|5s|TSLA|nc2|UMAP_nn50                    ok
+  [ 0.27h] B|5s|TSLA|nc2|Diffusion_a1.0               ok
+  [ 0.27h] B|5s|TSLA|nc2|Diffusion_a0.5               ok
+  [ 0.27h] B|5s|TSLA|nc3|PCA                          ok
+  [ 0.27h] B|5s|TSLA|nc3|KernelPCA_rbf                ok
+  [ 0.27h] B|5s|TSLA|nc3|Isomap_nn10                  ok
+  [ 0.27h] B|5s|TSLA|nc3|Isomap_nn30                  ok
+  [ 0.27h] B|5s|TSLA|nc3|LLE                          ok
+  [ 0.28h] B|5s|TSLA|nc3|UMAP_nn15                    ok
+  [ 0.28h] B|5s|TSLA|nc3|UMAP_nn50                    ok
+  [ 0.28h] B|5s|TSLA|nc3|Diffusion_a1.0               ok
+  [ 0.28h] B|5s|TSLA|nc3|Diffusion_a0.5               ok
+
+[sweep] finished phase(s). new configs this run: 198, elapsed 0.28h. results -> sweep_results.csv
+Fatal Python error: init_sys_streams: can't initialize sys standard streams
+Python runtime state: core initialized
+OSError: [Errno 9] Bad file descriptor
+
+Current thread 0x00000001f7f6de80 (most recent call first):
+  <no Python frame>
