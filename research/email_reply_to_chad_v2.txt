@@ -1,0 +1,14 @@
+Subject: Re: Sample TAQ Data — Initial Findings and Feature Engineering Directions
+
+Hi Chad,
+
+Yes, 1:00 on Tuesday works for me. Thanks for sending the invite.
+
+I have made a first pass on the NYSE TAQ samples. I built a parser for the BBO and consolidated trade files, constructed 1-minute microstructure bars, and generated full-day volume and volatility profiles for a few liquid symbols. The code and a short report are in the repo under research/.
+
+I also have an end-to-end volatility smile visualization ready that we can look at in the context of model calibration.
+
+Happy to go through the details and next steps on Tuesday.
+
+Best,
+Harold
