@@ -1,0 +1,75 @@
+Subject: Re: Sample TAQ Data — Initial Findings and Feature Engineering Directions
+
+Hi Chad,
+
+Thanks for the pointer to the NYSE TAQ samples. I downloaded and inspected the data and have a first pass at feature engineering. Here is a concise summary of what I found and what I think we can do next.
+
+1. What is in the sample directory
+
+The FTP site contains a wide range of sample feeds:
+
+- DAILY TAQ: consolidated NBBO (~9.5 GB/day), consolidated trades (~3.2 GB/day), reference master, and split BBO files by ticker letter.
+- Venue-specific: NYSE BBO, trades, integrated feed, order imbalances, and OpenBook depth.
+- Other venues: NYSE Arca, American, National, etc.
+
+I downloaded four files: the reference master, the NYSE BBO first hour, the NYSE trades, and the consolidated full-day trades. The full-day consolidated trades file is the most useful for trade-flow features.
+
+2. Schema and parsing
+
+I reverse-engineered the formats from the raw files:
+
+- Reference master: pipe-delimited, 40 fields, 12,181 symbols, with per-venue trading flags.
+- NYSE BBO quotes: comma-delimited, msg type 140, field order [ask_px, ask_sz, bid_px, bid_sz]. Quote condition 4 = one-sided update, 5 = two-sided quote.
+- Consolidated trades: pipe-delimited, fields include timestamp, exchange, symbol, sale condition, volume, and price.
+
+All parsing scripts are checked into the repo under research/.
+
+3. Feature engineering built
+
+I built a 1-minute bar engine and computed:
+
+- Quote-based: mean/median/max spread (bps), quote intensity, depth imbalance, log quoted depth, rolling volatility.
+- Trade-based: total volume, trade count, VWAP, average trade size, dollar volume, sale-condition breakdown.
+- Cross-sectional: full-day volume/volatility profiles for SPY, QQQ, TSLA, AAPL, IWM, MSFT.
+
+4. Key empirical findings
+
+- ETFs (SPY, QQQ, IWM) dominate by volume and trade in large blocks. Single-name tech stocks (TSLA, MSFT) have many small trades.
+- AAPL saw 48.8M shares and 642K trades on 2026-01-02; SPY saw 93.5M shares and 1.25M trades.
+- BBO quote frequency in the first hour reaches 10–90 quotes per second for the most liquid names.
+- Tightest spreads in the opening hour are on ETFs (~10–40 bps); single-name spreads are wider.
+- Simple 1-minute predictive models (Ridge for volatility, Logistic for direction) are noise-level on one hour of data. This is expected — high-frequency prediction needs much more data.
+
+5. Best directions for feature engineering
+
+Given your focus on feature engineering, I see the most promising projects as:
+
+A. Link TAQ equity microstructure to the existing options implied-volatility work. Use daily microstructure features (spread, volume, volatility signature) from SPY/SPX constituents to predict next-day ATM implied vol and skew changes. This directly bridges the two datasets we are already building.
+
+B. Implement VPIN (Volume-Synchronized Probability of Informed Trading) on the consolidated trade data. This is a classic, well-cited microstructure feature that predicts short-term stress and volatility spikes.
+
+C. Build a daily liquidity stress index across all symbols: median spread, fraction of stocks with spreads > 100 bps, Amihud illiquidity, and cross-sectional dispersion. Compare it to VIX and SPX realized volatility.
+
+D. Auction imbalance signals from the NYSE ORDER IMBALANCES feed. Opening and closing auction imbalances are known predictors of price pressure around the open/close.
+
+E. Full LOB depth features from NYSE OpenBook, once available. Queue pressure, depth asymmetry, and level-2+ features are stronger than top-of-book BBO alone.
+
+6. Practical considerations
+
+- Data volume: one full day of consolidated trades + NBBO is ~12 GB compressed. A month is ~250 GB, two years ~6 TB. We will need to decide on a sampling strategy.
+- Parsing speed: Python/pandas handles ~100K messages/sec; for full production use, polars or chunked pyarrow would be 10x faster.
+- The first-hour BBO sample is too short for reliable predictive modeling. A full-day or multi-day panel is needed.
+
+7. Questions for you
+
+Before I go deeper, I would like to confirm the scope:
+
+- Should I focus on a single symbol (e.g., SPY) or a cross-section?
+- Is the goal intraday prediction (minutes/seconds) or daily features for longer-horizon models?
+- Do you want me to prioritize the link to the options/IV-surface work, or explore the standalone microstructure features first?
+- Should I download the full-day consolidated NBBO as well (~9.5 GB), or is the trades file enough for now?
+
+All code, CSVs, plots, and the full report are in the research/ folder and pushed to the repo. I can walk through the results in our next meeting if useful.
+
+Best,
+Harold
