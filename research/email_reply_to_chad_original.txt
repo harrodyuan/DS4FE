@@ -1,0 +1,12 @@
+Subject: Re: Sample TAQ Data
+
+Hi Chad,
+
+Thanks for sharing the link. I downloaded the reference master, the NYSE BBO first hour, the NYSE trades, and the consolidated full-day trades.
+
+I parsed the formats and built a 1-minute microstructure feature pipeline: quoted spreads, depth imbalance, quote intensity, volume, VWAP, and full-day trade profiles. I put the scripts and a short report in the repo under research/.
+
+I agree the opening hour is special, so I would want to pull the full-day consolidated NBBO before drawing strong conclusions about predictive features. Let me know if you would like me to do that, and we can discuss the best directions on Tuesday.
+
+Best,
+Harold
